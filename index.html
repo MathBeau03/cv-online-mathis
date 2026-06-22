@@ -76,6 +76,57 @@
 </head>
 <body>
 
+<!-- ── Écran de chargement ───────────────────────────────────── -->
+<div id="loading-screen" aria-hidden="true">
+  <div class="loader-content">
+    <div class="loader-initials">MB</div>
+    <div class="loader-name">Mathis Beauchamp</div>
+    <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+    <div class="loader-label">Chargement en cours…</div>
+  </div>
+</div>
+<style>
+  #loading-screen {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #0d0d0d;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+  #loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  .loader-content { text-align: center; }
+  .loader-initials {
+    font-size: 3.5rem; font-weight: 800; color: #fff;
+    letter-spacing: 0.12em;
+    animation: pulse-mb 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse-mb {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.6; transform: scale(0.97); }
+  }
+  .loader-name {
+    color: #888; font-size: 0.95rem; letter-spacing: 0.2em;
+    text-transform: uppercase; margin: 0.6rem 0 1.6rem;
+  }
+  .loader-bar-wrap {
+    width: 180px; height: 3px; background: #222;
+    border-radius: 99px; overflow: hidden; margin: 0 auto 1rem;
+  }
+  .loader-bar {
+    height: 100%; width: 0; background: #fff;
+    border-radius: 99px;
+    animation: fill-bar 2.5s ease forwards;
+  }
+  @keyframes fill-bar { 0% { width: 0; } 80% { width: 85%; } 100% { width: 100%; } }
+  .loader-label { color: #555; font-size: 0.78rem; letter-spacing: 0.1em; }
+</style>
+<script>
+  window.addEventListener('load', function() {
+    var s = document.getElementById('loading-screen');
+    if (s) { s.classList.add('hidden'); setTimeout(function(){ s.remove(); }, 700); }
+  });
+</script>
+
   <!-- Lien d'accès rapide pour les utilisateurs clavier / lecteurs d'écran -->
   <a href="#main-content" class="skip-link">Passer au contenu principal</a>
 
