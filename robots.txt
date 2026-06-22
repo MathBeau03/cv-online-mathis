@@ -1,0 +1,18 @@
+# robots.txt — Portfolio Mathis Beauchamp
+# https://mathisbeauchamp.fr/
+
+User-agent: *
+Allow: /
+Allow: /matcher/
+Allow: /generator/
+
+# Bloquer les fichiers sensibles
+Disallow: /server.js
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /.env
+Disallow: /node_modules/
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://mathisbeauchamp.fr/sitemap.xml

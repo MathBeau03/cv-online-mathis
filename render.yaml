@@ -1,0 +1,19 @@
+# render.yaml — Déploiement automatique sur Render.com
+# Copiez ce fichier à la racine de votre repo GitHub
+# Puis connectez votre repo sur https://dashboard.render.com
+
+services:
+  - type: web
+    name: portfolio-mathis-beauchamp
+    runtime: node
+    plan: free          # Passez à "starter" ($7/mois) pour éviter le cold start de 50s
+    region: frankfurt   # Plus proche de Paris
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ANTHROPIC_API_KEY
+        sync: false       # À saisir manuellement dans le dashboard Render (jamais committé)
+    healthCheckPath: /
+    autoDeploy: true      # Redéploiement automatique à chaque push sur la branche principale

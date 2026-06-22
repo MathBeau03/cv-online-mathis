@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ── SEO Core ─────────────────────────────────────────────── -->
+  <title>Mathis Beauchamp | Project Data Manager · Portfolio IA &amp; Data</title>
+  <meta name="description" content="Mathis Beauchamp — alternant Project Data Manager chez Société Générale, Master MSI &amp; Data à l'EMLV. Portfolio spécialisé IA, Data et Systèmes d'Information. Disponible en CDI 2026." />
+  <meta name="keywords" content="Mathis Beauchamp, Project Data Manager, Portfolio IA, Portfolio Data, Data Manager, Management SI, Société Générale, EMLV, alternance, CDI 2026" />
+  <meta name="author" content="Mathis Beauchamp" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://mathisbeauchamp.fr/" />
+
+  <!-- ── Favicon ───────────────────────────────────────────────── -->
+  <link rel="icon" type="image/png" href="images/FavIcon.png" />
+
+  <!-- ── Open Graph ────────────────────────────────────────────── -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://mathisbeauchamp.fr/" />
+  <meta property="og:site_name"   content="Mathis Beauchamp · Portfolio" />
+  <meta property="og:locale"      content="fr_FR" />
+  <meta property="og:title"       content="Mathis Beauchamp | Project Data Manager · Portfolio IA &amp; Data" />
+  <meta property="og:description" content="Alternant Project Data Manager chez Société Générale · Master MSI &amp; Data · Passionné IA, Data et Systèmes d'Information · Disponible CDI 2026" />
+  <meta property="og:image"       content="https://mathisbeauchamp.fr/images/og-preview.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt"   content="Mathis Beauchamp — Project Data Manager" />
+
+  <!-- ── Twitter Card ──────────────────────────────────────────── -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Mathis Beauchamp | Project Data Manager · Portfolio IA &amp; Data" />
+  <meta name="twitter:description" content="Alternant Project Data Manager chez Société Générale · Master MSI &amp; Data · Disponible CDI 2026" />
+  <meta name="twitter:image"       content="https://mathisbeauchamp.fr/images/og-preview.jpg" />
+
+  <!-- ── Schema.org — Person ───────────────────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Mathis Beauchamp",
+    "jobTitle": "Project Data Manager",
+    "description": "Étudiant Master Management des Systèmes d'Information et Data, alternant Project Data Manager chez Société Générale, passionné d'IA, Data et entrepreneuriat.",
+    "url": "https://mathisbeauchamp.fr/",
+    "email": "mathis.beau.job@outlook.fr",
+    "sameAs": [
+      "https://www.linkedin.com/in/mathis-beauchamp/",
+      "https://github.com/MathBeau03"
+    ],
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "EMLV – École de Management Léonard de Vinci"
+    },
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Société Générale"
+    },
+    "knowsAbout": ["Intelligence Artificielle", "Data Analysis", "Management des Systèmes d'Information", "Python", "SQL", "Power BI", "Machine Learning", "Gestion de projet Agile"],
+    "nationality": "French",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Paris",
+      "addressCountry": "FR"
+    }
+  }
+  </script>
+
+  <!-- ── Preconnect ────────────────────────────────────────────── -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+
+  <!-- ── Styles ────────────────────────────────────────────────── -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- ── EmailJS (defer pour ne pas bloquer le rendu) ─────────── -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
+</head>
+<body>
+
+  <!-- Lien d'accès rapide pour les utilisateurs clavier / lecteurs d'écran -->
+  <a href="#main-content" class="skip-link">Passer au contenu principal</a>
+
+  <header class="hero">
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-content container">
+
+      <nav class="top-nav" aria-label="Navigation principale">
+        <div class="logo" aria-hidden="true" style="visibility:hidden;width:0;padding:0;border:none;overflow:hidden;"></div>
+        <ul class="nav-links" role="list">
+          <li><a href="#education">Formation</a></li>
+          <li><a href="#about">Qui suis-je ?</a></li>
+          <li><a href="#experience">Expériences</a></li>
+          <li><a href="#skills">Compétences</a></li>
+          <li><a href="#projects">Projets</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="hero-main">
+        <div class="hero-photo-wrap">
+          <img
+            src="images/photo.png"
+            alt="Mathis Beauchamp, Project Data Manager"
+            class="hero-photo"
+            width="270"
+            fetchpriority="high"
+          />
+        </div>
+        <div>
+          <p class="hero-tagline">Master Management SI &amp; Data · Recherche CDI 2026</p>
+          <h1>Mathis Beauchamp</h1>
+
+          <hr class="hero-divider" />
+
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <span class="hero-stat-number">5+</span>
+              <span class="hero-stat-label">Projets livrés à la SG</span>
+            </div>
+            <div class="hero-stat">
+              <span class="hero-stat-number">7</span>
+              <span class="hero-stat-label">Centres de services impactés</span>
+            </div>
+            <div class="hero-stat hero-stat--highlight">
+              <span class="hero-stat-number">2 Projets</span>
+              <span class="hero-stat-label">Prioritaires pour la direction</span>
+            </div>
+            <div class="hero-stat hero-stat--highlight">
+              <span class="hero-stat-number">🏆 🥇</span>
+              <span class="hero-stat-label">Coupe de France Fédérale · Volley 2026</span>
+            </div>
+          </div>
+
+          <hr class="hero-divider" />
+
+          <div class="hero-actions">
+            <a href="#projects" class="btn primary">Voir mes projets</a>
+            <a href="#contact" class="btn ghost">Me contacter</a>
+          </div>
+
+          <div class="hero-links">
+            <a href="https://github.com/MathBeau03" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <span aria-hidden="true">·</span>
+            <a href="https://www.linkedin.com/in/mathis-beauchamp/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ── MATCHER IA ──────────────────────────────────────────── -->
+    <section class="matcher-highlight reveal" aria-label="Outil de matching IA">
+      <div class="matcher-highlight__glow" aria-hidden="true"></div>
+      <div class="container">
+        <div class="matcher-highlight__inner">
+
+          <div class="matcher-highlight__deco" aria-hidden="true">
+            <svg class="mh-ring" width="110" height="110" viewBox="0 0 110 110" aria-hidden="true">
+              <circle class="mh-track" cx="55" cy="55" r="46"/>
+              <circle class="mh-arc"   cx="55" cy="55" r="46"/>
+            </svg>
+            <div class="mh-score-text">
+              <span class="mh-score-num">78</span>
+              <span class="mh-score-label">/ 100</span>
+            </div>
+          </div>
+
+          <div class="matcher-highlight__content">
+            <h2 class="matcher-highlight__title">Tester le matching IA</h2>
+            <p class="matcher-highlight__desc">
+              Déposez n'importe quelle offre d'emploi : PDF, image ou texte brut,
+              et obtenez en quelques secondes un <strong>score de matching</strong>,
+              les compétences couvertes et les manques identifiés, générés par IA.
+            </p>
+            <ul class="matcher-highlight__features" aria-label="Fonctionnalités du matching IA">
+              <li><span class="mh-dot" aria-hidden="true"></span>Score 0 – 100 calculé par l'IA</li>
+              <li><span class="mh-dot" aria-hidden="true"></span>Compétences matchées &amp; manquantes</li>
+              <li><span class="mh-dot" aria-hidden="true"></span>Analyse rédigée en langage naturel</li>
+            </ul>
+            <a href="matcher/" class="matcher-highlight__cta">
+              Analyser le matching
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FORMATION ──────────────────────────────────────────── -->
+    <section id="education" class="section">
+      <div class="container section-content reveal">
+        <p class="section-label">Parcours académique</p>
+        <h2>Formation</h2>
+
+        <div class="edu-timeline-wrap">
+          <div class="edu-timeline">
+            <div class="edu-line" aria-hidden="true"></div>
+
+            <!-- 1 : Programme Grande École -->
+            <div class="edu-step">
+              <div class="edu-dot" aria-hidden="true"></div>
+              <div class="edu-card">
+                <span class="edu-year">Sept 2021 – Août 2022</span>
+                <h3 class="edu-degree">Programme Grande École</h3>
+                <p class="edu-school">EMLV – École de Management Léonard de Vinci</p>
+                <p class="edu-detail">Statut SHN — Volley-ball</p>
+                <div class="edu-tags">
+                  <span class="edu-tag">Fondamentaux du Business</span>
+                  <span class="edu-tag">Marketing &amp; Commerce</span>
+                  <span class="edu-tag">Gestion, finance &amp; droit</span>
+                  <span class="edu-tag">Digital &amp; Outils du manager</span>
+                  <span class="edu-tag">Ecological Mindset</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2 : Année internationale -->
+            <div class="edu-step edu-step--intl">
+              <div class="edu-dot edu-dot--intl" aria-hidden="true"></div>
+              <div class="edu-card edu-card--intl">
+                <span class="edu-year">Sept 2022 – Août 2024</span>
+                <h3 class="edu-degree">Année internationale 🇫🇮 🇨🇦</h3>
+                <p class="edu-detail edu-detail--sub">Semestre universitaire en Finlande</p>
+                <p class="edu-school">JAMK University of Applied Sciences — Jyväskylä</p>
+                <p class="edu-detail">Bachelor's degree · International Business</p>
+                <p class="edu-detail">Global Leadership · Efficacité organisationnelle</p>
+                <p class="edu-detail edu-detail--sub" style="margin-top:0.6rem;">Stage au Canada</p>
+                <p class="edu-school">EIC – Montréal</p>
+                <p class="edu-detail">Business Operations &amp; CEO Assistant</p>
+              </div>
+            </div>
+
+            <!-- 3 : Master MSI & Data — EN COURS -->
+            <div class="edu-step edu-step--current">
+              <div class="edu-dot edu-dot--current" aria-hidden="true"></div>
+              <div class="edu-card edu-card--current">
+                <span class="edu-badge">En cours</span>
+                <span class="edu-year">Sept 2024 – 2026</span>
+                <h3 class="edu-degree">Master · Management des SI &amp; Data</h3>
+                <p class="edu-school">EMLV – École de Management Léonard de Vinci</p>
+                <p class="edu-detail">Alternance · Société Générale</p>
+                <div class="edu-tags">
+                  <span class="edu-tag">Big Data &amp; Data Analytics</span>
+                  <span class="edu-tag">Machine Learning</span>
+                  <span class="edu-tag">Data Visualization</span>
+                  <span class="edu-tag">Python · SQL</span>
+                  <span class="edu-tag">IT Cloud Architecture</span>
+                  <span class="edu-tag">Gestion de projet agile</span>
+                  <span class="edu-tag">Cybersecurity &amp; Quality Mgmt</span>
+                  <span class="edu-tag">Management des SI</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── QUI SUIS-JE ────────────────────────────────────────── -->
+    <section id="about" class="section tighten">
+      <div class="container section-content reveal">
+        <p class="section-label">Au-delà du CV</p>
+        <h2>Qui suis-je ?</h2>
+
+        <div class="interests-grid">
+
+          <!-- Volley semi-pro -->
+          <div class="interest-card">
+            <img src="images/engagement-2.png" class="interest-logo" alt="Volley-ball" loading="lazy" width="55" height="55" />
+            <h3>Volley – Niveau national</h3>
+            <p>
+              Pratique intensive depuis de nombreuses années, jusqu'au niveau semi-professionnel,
+              et <strong>vainqueur de la Coupe de France Fédérale 2026</strong>.
+              J'y ai développé des <strong>compétences clés</strong> : leadership, gestion du stress et esprit d'équipe.
+            </p>
+          </div>
+
+          <!-- Trouve Ta Voix -->
+          <div class="interest-card">
+            <img src="images/engagement-1.png" class="interest-logo" alt="Trouve Ta Voix – association d'éloquence" loading="lazy" width="55" height="55" />
+            <h3>Trouve Ta Voix</h3>
+            <p>
+              Association d'éloquence où j'ai eu le plaisir de transmettre des méthodes pour aider les lycéens
+              à prendre confiance, structurer leurs idées et s'exprimer en public.
+            </p>
+          </div>
+
+          <!-- Marchés financiers -->
+          <div class="interest-card">
+            <img src="images/finance.png" class="interest-logo" alt="Finance et marchés" loading="lazy" width="55" height="55" />
+            <h3>Marchés financiers</h3>
+            <p>
+              Investissement, macroéconomie, analyse de marché…
+              J'aime comprendre les dynamiques financières et suivre l'évolution des actifs.
+            </p>
+          </div>
+
+          <!-- Création & Projets -->
+          <div class="interest-card">
+            <img src="images/creation.png" class="interest-logo" alt="Création et projets digitaux" loading="lazy" width="55" height="55" />
+            <h3>Création &amp; Projets</h3>
+            <p>
+              J'aime imaginer, construire et lancer de nouveaux projets : sites web, marques,
+              outils digitaux, expériences visuelles. Créer me permet d'apprendre, d'innover
+              et de donner vie à mes idées.
+            </p>
+          </div>
+
+          <!-- Lecture -->
+          <div class="interest-card">
+            <img src="images/lecture.png" class="interest-logo" alt="Lecture" loading="lazy" width="55" height="55" />
+            <h3>Lecture</h3>
+            <p>
+              Passionné par les livres qui développent l'esprit critique, l'intelligence émotionnelle
+              et la connaissance de soi. De la psychologie à la productivité, la lecture structure ma vision du monde.
+            </p>
+          </div>
+
+          <!-- Voyages -->
+          <div class="interest-card">
+            <img src="images/voyage.png" class="interest-logo" alt="Voyages" loading="lazy" width="55" height="55" />
+            <h3>Voyages</h3>
+            <p>
+              Découvrir d'autres cultures, paysages et modes de vie.
+              Mes voyages m'aident à gagner en ouverture d'esprit et en adaptabilité.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── EXPÉRIENCES ─────────────────────────────────────────── -->
+    <section id="experience" class="section alt">
+      <div class="container section-content reveal">
+        <p class="section-label">Parcours professionnel</p>
+        <h2>Expériences</h2>
+
+        <div class="exp-slider" tabindex="0" aria-label="Carrousel des expériences professionnelles" role="region">
+          <div class="exp-viewport">
+            <div class="exp-track">
+
+              <!-- EXPÉRIENCE 1 -->
+              <article class="exp-card state-active">
+                <div class="experience-header-row">
+                  <div class="experience-logo-wrap">
+                    <img src="images/logos-sg.png" alt="Société Générale" class="experience-logo" loading="lazy" width="44" height="44" />
+                  </div>
+                  <div>
+                    <h3>Alternant – Chargé de mise en œuvre projet</h3>
+                    <p class="experience-meta">Société Générale · 2024 – 2026 · Paris, France</p>
+                  </div>
+                </div>
+                <p class="experience-intro">
+                  Au sein de la Direction des Opérations de la Banque de Détail, je pilote la transformation
+                  des processus de la filière Financement Immobilier Particuliers (FIP) : automatisation,
+                  fiabilisation des données et amélioration continue sur 5+ projets prioritaires de la Direction.
+                </p>
+                <ul class="experience-list">
+                  <li>📊 Pilotage de <strong>plusieurs projets prioritaires Direction</strong> liés à la performance opérationnelle et à la qualité des processus FIP.</li>
+                  <li>🤖 Automatisation de <strong>+10 procédures FIP</strong> via macros Excel et C3P, déployées à la tête de filière et partagées aux <strong>7 centres de services</strong>, à fort potentiel d'économies ETP.</li>
+                  <li>🚀 Analyse des données pour identifier les leviers d'efficacité et fiabiliser les opérations au sein des Centres de Services.</li>
+                  <li>🤝 Collaboration transverse avec référents métiers, responsables qualité et équipes locales pour homogénéiser les pratiques.</li>
+                  <li>👨‍💻 Contribution à la digitalisation des processus bancaires via le déploiement de plusieurs outils digitaux.</li>
+                </ul>
+              </article>
+
+              <!-- EXPÉRIENCE 2 -->
+              <article class="exp-card state-next">
+                <div class="experience-header-row">
+                  <div class="experience-logo-wrap">
+                    <img src="images/logos-EIC.png" alt="EIC – Experience Internship Canada" class="experience-logo" loading="lazy" width="44" height="44" />
+                  </div>
+                  <div>
+                    <h3>Business Operations &amp; CEO Assistant</h3>
+                    <p class="experience-meta">EIC – Experience Internship Canada · 2024 · Montréal</p>
+                  </div>
+                </div>
+                <p class="experience-intro">
+                  Rôle transversal au cœur de la gestion quotidienne de l'entreprise :
+                  opérations internes, développement de services et accompagnement des étudiants internationaux.
+                </p>
+                <ul class="experience-list">
+                  <li>🌍 Accompagnement de <strong>50+ étudiants internationaux</strong> dans leurs démarches administratives, installation et intégration au Canada.</li>
+                  <li>🧭 Optimisation des processus internes pour améliorer l'efficacité opérationnelle de l'entreprise.</li>
+                  <li>📈 Création de contenus, témoignages et recommandations pour renforcer l'attractivité du programme.</li>
+                  <li>💡 Force de proposition sur de nouveaux services et optimisations pour améliorer l'expérience client.</li>
+                </ul>
+              </article>
+
+              <!-- EXPÉRIENCE 3 -->
+              <article class="exp-card state-next">
+                <div class="experience-header-row">
+                  <div class="experience-logo-wrap">
+                    <img src="images/BNP.jpeg" alt="BNP Paribas" class="experience-logo" loading="lazy" width="44" height="44" />
+                  </div>
+                  <div>
+                    <h3>Employé administratif – Conformité &amp; Risques</h3>
+                    <p class="experience-meta">Copartis – BNP Paribas · 2024 · Rueil-Malmaison</p>
+                  </div>
+                </div>
+                <p class="experience-intro">
+                  Contribution à la conformité réglementaire et à la prévention des risques financiers
+                  au sein de Copartis, filiale de BNP Paribas : rôle à forte dimension analytique.
+                </p>
+                <ul class="experience-list">
+                  <li>🛡️ Contribution au <strong>retour à la conformité du traitement des alertes</strong> : délai ramené de <strong>J+23 à J+1</strong> sur la période.</li>
+                  <li>🔍 Analyse et détection d'activités potentiellement frauduleuses à partir d'indicateurs clés et d'alertes internes.</li>
+                  <li>📊 Utilisation d'outils avancés pour surveiller les flux financiers, identifier les anomalies et documenter les risques.</li>
+                  <li>🏛️ Veille au respect des obligations réglementaires LCB-FT (lutte contre le blanchiment et le financement du terrorisme).</li>
+                </ul>
+              </article>
+
+            </div>
+          </div>
+
+          <div class="exp-controls">
+            <button class="exp-btn exp-btn--prev" aria-label="Expérience précédente" disabled>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+            </button>
+            <div class="exp-dots" role="tablist" aria-label="Sélectionner une expérience">
+              <button class="exp-dot active" role="tab" aria-selected="true"  aria-label="Société Générale"></button>
+              <button class="exp-dot"        role="tab" aria-selected="false" aria-label="EIC Montréal"></button>
+              <button class="exp-dot"        role="tab" aria-selected="false" aria-label="BNP Paribas"></button>
+            </div>
+            <button class="exp-btn exp-btn--next" aria-label="Expérience suivante">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <span class="exp-counter" aria-live="polite" aria-atomic="true">01 / 03</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── COMPÉTENCES ─────────────────────────────────────────── -->
+    <section id="skills" class="section alt">
+      <div class="container section-content reveal">
+        <p class="section-label">Stack &amp; Savoir-faire</p>
+        <h2>Compétences</h2>
+
+        <div class="skills-slider" tabindex="0" aria-label="Carrousel des compétences" role="region">
+          <div class="skills-viewport">
+            <div class="skills-track">
+
+              <!-- CARTE 1 : Certifications -->
+              <div class="skill-card skill-card--cert state-active">
+                <div class="skill-card-header">
+                  <span class="skill-icon" aria-hidden="true">🏅</span>
+                  <h3>Certifications</h3>
+                </div>
+                <div class="skill-items">
+                  <div class="skill-item">
+                    <div class="skill-name-row">
+                      <span class="skill-name">Excel Avancé</span>
+                      <span class="skill-level level-cert">TOSA · 2025</span>
+                    </div>
+                    <div class="skill-tags">
+                      <span class="stag">Macros</span>
+                      <span class="stag">Power Query</span>
+                      <span class="stag">TCD</span>
+                      <span class="stag">Analyse de données</span>
+                    </div>
+                    <p class="cert-issuer">Tosa Certifications</p>
+                  </div>
+                  <div class="skill-item">
+                    <div class="skill-name-row">
+                      <span class="skill-name">Gestion de projet Agile</span>
+                      <span class="skill-level level-cert">PSM I · 2024</span>
+                    </div>
+                    <div class="skill-tags">
+                      <span class="stag">Scrum Framework</span>
+                      <span class="stag">Sprint Planning</span>
+                      <span class="stag">Backlog</span>
+                    </div>
+                    <p class="cert-issuer">Scrum.org</p>
+                  </div>
+                  <div class="skill-item">
+                    <div class="skill-name-row">
+                      <span class="skill-name">Python</span>
+                      <span class="skill-level level-cert">OC · 2023</span>
+                    </div>
+                    <div class="skill-tags">
+                      <span class="stag">Bases du langage</span>
+                      <span class="stag">Algorithmique</span>
+                    </div>
+                    <p class="cert-issuer">OpenClassrooms</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CARTE 2 : Data & IA -->
+              <div class="skill-card state-next">
+                <div class="skill-card-header">
+                  <span class="skill-icon" aria-hidden="true">🧠</span>
+                  <h3>Data &amp; IA</h3>
+                </div>
+                <div class="skill-items">
+                  <div class="skill-item">
+                    <div class="skill-name-row">
+                      <span class="skill-name">DataViz</span>
+                      <span class="skill-level level-advanced">Avancé</span>
+                    </div>
+                    <div class="skill-tags">
+                      <span class="stag">Power BI</span>
+                      <span class="stag">Tableau Desktop</span>
+                      <span class="stag">MicroStrategy</span>
+                    </div>
+                  </div>
+                  <div class="skill-item">
+                    <div class="skill-name-row">
+                      <span class="skill-name">Python</span>
+                      <span class="skill-level level-advanced">Avancé</span>
+                    </div>
+                    <div class="skill-tags">
+                      <span class="stag">Pandas</span>
+                      <span class="stag">NumPy</span>
+                      <span class="stag">scikit-learn</span>
+                      <span class="stag">Data Analysis</span>
+                    </div>
+                  </div>
+                  <div class="skill-item">
+                    <div class="skill-name-row">
+                      <span class="skill-name">Machine Learning</span>
+                      <span class="skill-level level-mid">Intermédiaire</span>
+                    </div>
+                    <div class="skill-tags">
+                      <span class="stag">Régression</span>
+                      <span class="stag">Classification</span>
+                      <span class="stag">Clustering</span>
+                    </div>
+                  </div>
+                  <div class="skill-item">
+                    <div class="skill-name-row">
+                      <span class="skill-name">SQL</span>
+                      <span class="skill-level level-mid">Intermédiaire</span>
+                    </div>
+                    <div class="skill-tags">
+                      <span class="stag">Jointures</span>
+                      <span class="stag">Agrégations</span>
+                      <span class="stag">Data Cleaning</span>
+                    </div>
+                  </div>
+                  <div class="skill-item">
+                    <div class="skill-name-row">
+                      <span class="skill-name">API LLM &amp; IA</span>
+                      <span class="skill-level level-mid">Intermédiaire</span>
+                    </div>
+                    <div class="skill-tags">
+                      <span class="stag">Claude API</span>
+                      <span class="stag">Prompt Engineering</span>
+                      <span class="stag">Intégration IA</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CARTE 3 : Dev & Outils -->
+              <div class="skill-card state-next">
+                <div class="skill-card-header">
+                  <span class="skill-icon" aria-hidden="true">⚙️</span>
+                  <h3>Dev &amp; Outils</h3>
+                </div>
+                <div class="skill-items">
+                  <div class="skill-item">
+                    <div class="skill-name-row">
+                      <span class="skill-name">HTML / CSS / JavaScript</span>
+                      <span class="skill-level level-mid">Intermédiaire</span>
+                    </div>
+                  </div>
+                  <div class="skill-item">
+                    <div class="skill-name-row">
+                      <span class="skill-name">Excel</span>
+                      <span class="skill-level level-advanced">Avancé</span>
+                    </div>
+                    <div class="skill-tags">
+                      <span class="stag">Macros VBA</span>
+                      <span class="stag">Power Query</span>
+                    </div>
+                  </div>
+                  <div class="skill-item">
+                    <div class="skill-name-row">
+                      <span class="skill-name">GitHub</span>
+                    </div>
+                  </div>
+                  <div class="skill-item">
+                    <div class="skill-name-row">
+                      <span class="skill-name">Jupyter Notebook</span>
+                    </div>
+                  </div>
+                  <div class="skill-item">
+                    <div class="skill-name-row">
+                      <span class="skill-name">Notion</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CARTE 4 : Soft Skills -->
+              <div class="skill-card skill-card--soft state-next">
+                <div class="skill-card-header">
+                  <span class="skill-icon" aria-hidden="true">🤝</span>
+                  <h3>Soft Skills</h3>
+                </div>
+                <div class="soft-chips">
+                  <span class="soft-chip">Esprit d'équipe</span>
+                  <span class="soft-chip">Analyse</span>
+                  <span class="soft-chip">Curiosité</span>
+                  <span class="soft-chip">Gestion de projet</span>
+                  <span class="soft-chip">Pédagogie</span>
+                  <span class="soft-chip">Adaptabilité</span>
+                  <span class="soft-chip">Leadership</span>
+                  <span class="soft-chip">Résilience</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="skills-controls">
+            <button class="skills-btn skills-btn--prev" aria-label="Catégorie précédente" disabled>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="skills-dots" role="tablist" aria-label="Sélectionner une catégorie">
+              <button class="skills-dot active" role="tab" aria-selected="true"  aria-label="Certifications"></button>
+              <button class="skills-dot"        role="tab" aria-selected="false" aria-label="Data et IA"></button>
+              <button class="skills-dot"        role="tab" aria-selected="false" aria-label="Dev et Outils"></button>
+              <button class="skills-dot"        role="tab" aria-selected="false" aria-label="Soft Skills"></button>
+            </div>
+            <button class="skills-btn skills-btn--next" aria-label="Catégorie suivante">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PROJETS ─────────────────────────────────────────────── -->
+    <section id="projects" class="section">
+      <div class="container section-content reveal">
+        <p class="section-label">Réalisations</p>
+        <h2>Projets Personnels</h2>
+
+        <div class="proj-slider" tabindex="0" aria-label="Carrousel des projets" role="region">
+          <div class="proj-viewport">
+            <div class="proj-track">
+
+              <!-- PROJET 1 -->
+              <article class="proj-card state-active">
+                <div class="proj-card-body">
+                  <h3>La Planète des Singes – RPG Python</h3>
+                  <p>Jeu de rôle complet en Python avec <strong>architecture modulaire 10+ modules</strong> : système de combat, gestion d'inventaire, factions, scènes dynamiques et PNJ interactifs. Choix de race et faction, quêtes, dialogues dynamiques, <strong>tests unitaires pytest</strong> et installation automatique des dépendances.</p>
+                </div>
+                <div class="proj-card-footer">
+                  <p class="card-tech">Python · Pygame · POO</p>
+                  <a href="https://github.com/MathBeau03/rpg-planete-singes" class="card-link" target="_blank" rel="noopener noreferrer">Voir sur GitHub →</a>
+                </div>
+              </article>
+
+              <!-- PROJET 2 -->
+              <article class="proj-card state-next">
+                <div class="proj-card-body">
+                  <h3>Analyse Stratégique d'un Hypermarché Européen</h3>
+                  <p>Projet de Business Intelligence et Data Visualisation sous Tableau Desktop : impact des remises sur le profit, zones géographiques déficitaires, analyse des retours clients et sous-catégories à risque. Dashboards interactifs, storytelling data, paramètres dynamiques et analyses décisionnelles orientées aide à la décision stratégique.</p>
+                </div>
+                <div class="proj-card-footer">
+                  <p class="card-tech">Tableau Desktop · Business Intelligence · KPI Analysis</p>
+                  <a href="https://public.tableau.com/shared/FB62S264W?:display_count=n&:origin=viz_share_link" class="card-link" target="_blank" rel="noopener noreferrer">Voir sur Tableau Public →</a>
+                </div>
+              </article>
+
+              <!-- PROJET 3 — Ce Portfolio IA -->
+              <article class="proj-card state-next">
+                <div class="proj-card-body">
+                  <h3>Portfolio IA — Ce site</h3>
+                  <p>Portfolio full-stack avec backend Node.js/Express, 3 fonctionnalités IA intégrées (matching, générateur de lettre, chatbot RAG), déployé sur Render + Vercel. Design premium inspiré d'Apple/Linear, animations CSS, SEO avancé.</p>
+                </div>
+                <div class="proj-card-footer">
+                  <p class="card-tech">HTML · CSS · JS · Node.js · Claude API · Vercel</p>
+                  <a href="https://github.com/MathBeau03" class="card-link" target="_blank" rel="noopener noreferrer">Voir le repo →</a>
+                </div>
+              </article>
+
+              <!-- PROJET 4 -->
+              <article class="proj-card state-next">
+                <div class="proj-card-body">
+                  <h3>Portfolio de Notebooks Data Science</h3>
+                  <p>Expérimentations, analyses et modèles testés en Jupyter : exploration de données, visualisations et prototypes ML. Régression, clustering, classification sur datasets réels.</p>
+                </div>
+                <div class="proj-card-footer">
+                  <p class="card-tech">Python · Jupyter · scikit-learn · Pandas</p>
+                  <a href="https://github.com/MathBeau03" class="card-link" target="_blank" rel="noopener noreferrer">Voir le repo →</a>
+                </div>
+              </article>
+
+            </div>
+          </div>
+
+          <div class="proj-controls">
+            <button class="proj-btn proj-btn--prev" aria-label="Projet précédent" disabled>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="proj-dots" role="tablist" aria-label="Sélectionner un projet">
+              <button class="proj-dot active" role="tab" aria-selected="true"  aria-label="Projet RPG Python"></button>
+              <button class="proj-dot"        role="tab" aria-selected="false" aria-label="Analyse Hypermarché Tableau"></button>
+              <button class="proj-dot"        role="tab" aria-selected="false" aria-label="Portfolio IA"></button>
+              <button class="proj-dot"        role="tab" aria-selected="false" aria-label="Notebooks Data Science"></button>
+            </div>
+            <button class="proj-btn proj-btn--next" aria-label="Projet suivant">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CONTACT ─────────────────────────────────────────────── -->
+    <section id="contact" class="section">
+      <div class="container section-content reveal">
+        <p class="section-label">Restons en contact</p>
+        <h2>Contact</h2>
+
+        <div class="contact-grid">
+
+          <div class="contact-info">
+            <p><strong>Email :</strong> <a href="mailto:mathis.beau.job@outlook.fr">mathis.beau.job@outlook.fr</a></p>
+            <p><strong>GitHub :</strong> <a href="https://github.com/MathBeau03" target="_blank" rel="noopener noreferrer">MathBeau03</a></p>
+            <p><strong>LinkedIn :</strong> <a href="https://www.linkedin.com/in/mathis-beauchamp/" target="_blank" rel="noopener noreferrer">Profil LinkedIn</a></p>
+            <p class="contact-availability">
+              <span class="status-dot" aria-hidden="true"></span>
+              Disponible pour un CDI à partir de <strong>septembre 2026</strong>
+            </p>
+          </div>
+
+          <form class="contact-form" onsubmit="handleFormSubmit(event)" novalidate>
+            <label>
+              Nom
+              <input type="text" name="name" required autocomplete="name" placeholder="Jean Dupont" />
+            </label>
+            <label>
+              Email
+              <input type="email" name="email" required autocomplete="email" placeholder="jean@entreprise.com" />
+            </label>
+            <label>
+              Message
+              <textarea name="message" rows="4" required placeholder="Votre message…"></textarea>
+            </label>
+            <button type="submit" class="btn primary full">Envoyer</button>
+            <p class="form-feedback" id="form-feedback" aria-live="polite"></p>
+          </form>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <button class="scroll-top" id="scroll-top" aria-label="Remonter en haut de la page">↑</button>
+
+  <!-- ── Chat Hub ─────────────────────────────────────────────── -->
+  <button class="chat-hub-toggle" id="chat-hub-toggle" aria-label="Ouvrir l'assistant" aria-expanded="false">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  </button>
+
+  <!-- Menu principal -->
+  <div class="chat-hub-menu" id="chat-hub-menu" aria-hidden="true" role="dialog" aria-label="Menu de contact et d'assistance">
+    <div class="chat-hub-header">
+      <div class="chat-hub-avatar" aria-hidden="true">MB</div>
+      <div class="chat-hub-title-group">
+        <p class="chat-hub-greeting">Bonjour ! Comment puis-je vous aider ?</p>
+        <p class="chat-hub-sub">Mathis vous répond sous 24h.</p>
+        <span class="chat-hub-status"><span class="status-dot" aria-hidden="true"></span> Disponible</span>
+      </div>
+      <button class="chat-hub-close" id="chat-hub-close" aria-label="Fermer le menu">✕</button>
+    </div>
+    <div class="chat-hub-options">
+      <button class="chat-hub-option" data-panel="general">
+        <span class="option-icon option-icon--ai" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        </span>
+        <div class="option-text">
+          <strong>Poser une question à l'IA</strong>
+          <span>Qui est Mathis ? Pourquoi le recruter ?</span>
+        </div>
+        <svg class="option-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      <button class="chat-hub-option" data-panel="callback">
+        <span class="option-icon option-icon--phone" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </span>
+        <div class="option-text">
+          <strong>Être rappelé</strong>
+          <span>Je vous contacte sous 24h</span>
+        </div>
+        <svg class="option-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      <button class="chat-hub-option" data-panel="formation">
+        <span class="option-icon option-icon--formation" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </span>
+        <div class="option-text">
+          <strong>En savoir plus sur ma formation</strong>
+          <span>Parcours académique et certifications</span>
+        </div>
+        <svg class="option-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      <button class="chat-hub-option" data-panel="experiences">
+        <span class="option-icon option-icon--exp" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        </span>
+        <div class="option-text">
+          <strong>Expériences &amp; projets</strong>
+          <span>Posez vos questions</span>
+        </div>
+        <svg class="option-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+    <div class="chat-hub-footer">Mathis Beauchamp — Data &amp; IA</div>
+  </div>
+
+  <!-- Panel : Assistant IA Général -->
+  <div class="chat-hub-panel" id="panel-general" aria-hidden="true" role="dialog" aria-label="Assistant IA — Questions sur Mathis">
+    <div class="panel-header">
+      <button class="panel-back" aria-label="Retour au menu">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <span class="panel-title">🤖 Assistant IA</span>
+      <button class="panel-close" aria-label="Fermer">✕</button>
+    </div>
+    <div class="chatbot-messages" id="general-messages">
+      <div class="chatbot-msg assistant">
+        <p>Bonjour ! Je suis l'assistant IA de Mathis. Posez-moi n'importe quelle question sur son profil — formation, expériences, compétences, projets, ou pourquoi le recruter !</p>
+      </div>
+      <div class="chatbot-msg assistant">
+        <p>Exemples : <em>"Quels sont ses résultats chez SG ?"</em>, <em>"Quelles technologies maîtrise-t-il ?"</em>, <em>"Pourquoi Mathis ?"</em></p>
+      </div>
+    </div>
+    <div class="chatbot-input-wrap">
+      <input type="text" id="general-input" class="chatbot-input" placeholder="Posez votre question…" maxlength="400" autocomplete="off" aria-label="Votre question sur Mathis Beauchamp" />
+      <button class="chatbot-send" id="general-send" aria-label="Envoyer votre question">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Panel : Être rappelé -->
+  <div class="chat-hub-panel" id="panel-callback" aria-hidden="true" role="dialog" aria-label="Formulaire de rappel">
+    <div class="panel-header">
+      <button class="panel-back" aria-label="Retour au menu">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <span class="panel-title">Être rappelé</span>
+      <button class="panel-close" aria-label="Fermer">✕</button>
+    </div>
+    <div class="panel-body">
+      <p class="panel-desc">Laissez vos coordonnées, Mathis vous rappellera sous 24h.</p>
+      <form id="callback-form" class="callback-form" novalidate>
+        <label>Prénom <input type="text" name="prenom" required placeholder="Jean" autocomplete="given-name" /></label>
+        <label>Nom <input type="text" name="nom" required placeholder="Dupont" autocomplete="family-name" /></label>
+        <label>Entreprise <input type="text" name="entreprise" placeholder="Optionnel" autocomplete="organization" /></label>
+        <label>Téléphone <input type="tel" name="telephone" required placeholder="+33 6 00 00 00 00" autocomplete="tel" /></label>
+        <label>Email <input type="email" name="email" required placeholder="jean@exemple.com" autocomplete="email" /></label>
+        <button type="submit" class="btn primary full" id="callback-submit">Envoyer ma demande</button>
+        <p class="form-feedback" id="callback-feedback" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Panel : Formation chat -->
+  <div class="chat-hub-panel" id="panel-formation" aria-hidden="true" role="dialog" aria-label="Questions sur la formation de Mathis">
+    <div class="panel-header">
+      <button class="panel-back" aria-label="Retour au menu">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <span class="panel-title">Ma formation</span>
+      <button class="panel-close" aria-label="Fermer">✕</button>
+    </div>
+    <div class="chatbot-messages" id="formation-messages">
+      <div class="chatbot-msg assistant">
+        <p>Bonjour ! Je peux vous renseigner sur la formation de Mathis : Master MSI&amp;D à Léonard de Vinci, échange en Finlande, certifications PSM I, TOSA Excel… Posez votre question !</p>
+      </div>
+    </div>
+    <div class="chatbot-input-wrap">
+      <input type="text" id="formation-input" class="chatbot-input" placeholder="Votre question sur la formation…" maxlength="300" autocomplete="off" aria-label="Votre question sur la formation de Mathis" />
+      <button class="chatbot-send" id="formation-send" aria-label="Envoyer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Panel : Expériences chat -->
+  <div class="chat-hub-panel" id="panel-experiences" aria-hidden="true" role="dialog" aria-label="Questions sur les expériences de Mathis">
+    <div class="panel-header">
+      <button class="panel-back" aria-label="Retour au menu">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <span class="panel-title">Mes expériences</span>
+      <button class="panel-close" aria-label="Fermer">✕</button>
+    </div>
+    <div class="chatbot-messages" id="experiences-messages">
+      <div class="chatbot-msg assistant">
+        <p>Bonjour ! Posez-moi vos questions sur les expériences de Mathis (Société Générale, EIC Montréal, BNP Paribas et toutes les autres).</p>
+      </div>
+    </div>
+    <div class="chatbot-input-wrap">
+      <input type="text" id="experiences-input" class="chatbot-input" placeholder="Votre question sur les expériences…" maxlength="300" autocomplete="off" aria-label="Votre question sur les expériences de Mathis" />
+      <button class="chatbot-send" id="experiences-send" aria-label="Envoyer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <nav class="footer-nav" aria-label="Navigation secondaire">
+        <a href="/">Accueil</a>
+        <span aria-hidden="true">·</span>
+        <a href="/matcher/">Matching IA</a>
+        <span aria-hidden="true">·</span>
+        <a href="/generator/">Générateur CV</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/MathBeau03" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://www.linkedin.com/in/mathis-beauchamp/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </nav>
+      <p class="footer-copy">© <span id="year"></span> Mathis Beauchamp — Portfolio IA &amp; Data</p>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

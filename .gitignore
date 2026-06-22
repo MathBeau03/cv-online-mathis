@@ -1,0 +1,27 @@
+# Dépendances
+node_modules/
+
+# Variables d'environnement (clés API, secrets)
+.env
+.env.local
+.env.*.local
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build / dist
+dist/
+build/
+
+# Éditeurs
+.vscode/settings.json
+*.swp
+*.swo
+
+# Dossier Claude (Cowork sessions)
+.claude/

@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Job Matcher — Mathis Beauchamp</title>
+  <link rel="icon" type="image/png" href="/images/FavIcon.png" />
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-alt: #111217;
+      --card-bg: #161822;
+      --text: #f5f5f5;
+      --muted: #a0a3b1;
+      --accent: #f5c84c;
+      --accent-soft: rgba(245, 200, 76, 0.15);
+      --border: #252735;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --shadow-soft: 0 18px 35px rgba(0,0,0,0.5);
+      --green: #4caf79;
+      --green-soft: rgba(76, 175, 121, 0.15);
+      --orange: #f57c4c;
+      --orange-soft: rgba(245, 124, 76, 0.15);
+      --red: #f54c4c;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #121320 0, #050608 55%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.4rem;
+    }
+
+    /* ── Header ── */
+    .matcher-header {
+      padding: 2rem 0 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .header-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .header-badge {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(245,200,76,0.3);
+      border-radius: 999px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* ── Main ── */
+    .matcher-main {
+      padding: 3rem 0 4rem;
+    }
+
+    /* ── Step 1: Upload ── */
+    #step-upload {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .step-heading {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .step-heading h1 {
+      font-size: 2rem;
+      margin: 0 0 0.5rem;
+      background: linear-gradient(135deg, #f5f5f5 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .step-heading p {
+      color: var(--muted);
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    /* Drop zone */
+    .drop-zone {
+      border: 2px dashed rgba(245,200,76,0.4);
+      border-radius: var(--radius-xl);
+      background: var(--card-bg);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .drop-zone.dragover {
+      border-color: var(--accent);
+      background: rgba(245,200,76,0.05);
+    }
+    .drop-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .drop-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .drop-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 0 0 0.3rem;
+    }
+    .drop-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 0;
+    }
+    .drop-file-selected {
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* Divider */
+    .or-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.5rem 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .or-divider::before, .or-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Textarea */
+    .offer-textarea {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 1rem 1.2rem;
+      resize: vertical;
+      min-height: 160px;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .offer-textarea:focus {
+      border-color: rgba(245,200,76,0.5);
+    }
+    .offer-textarea::placeholder { color: var(--muted); }
+
+    /* Analyze button */
+    .btn-analyze {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 0.9rem 2rem;
+      background: linear-gradient(135deg, #f5c84c, #f3a93a);
+      color: #1b1306;
+      border: none;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+      transition: filter 0.2s, transform 0.1s;
+    }
+    .btn-analyze:hover:not(:disabled) { filter: brightness(1.08); }
+    .btn-analyze:active:not(:disabled) { transform: scale(0.98); }
+    .btn-analyze:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Loader */
+    .loader {
+      width: 18px;
+      height: 18px;
+      border: 2.5px solid rgba(27,19,6,0.3);
+      border-top-color: #1b1306;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    .btn-analyze.loading .loader { display: block; }
+    .btn-analyze.loading .btn-label { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Error */
+    .error-box {
+      background: rgba(245,76,76,0.1);
+      border: 1px solid rgba(245,76,76,0.3);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.2rem;
+      color: #f54c4c;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      display: none;
+    }
+    .error-box.visible { display: block; }
+
+    /* ── Step 2: Results ── */
+    #step-results {
+      display: none;
+    }
+    #step-results.visible {
+      display: block;
+      animation: fadeSlideIn 0.5s ease both;
+    }
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Score header */
+    .results-header {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+      padding: 2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+    }
+    .score-circle-wrap {
+      flex-shrink: 0;
+    }
+    .score-circle {
+      position: relative;
+      width: 120px;
+      height: 120px;
+    }
+    .score-circle svg {
+      transform: rotate(-90deg);
+    }
+    .score-track {
+      fill: none;
+      stroke: var(--border);
+      stroke-width: 8;
+    }
+    .score-fill {
+      fill: none;
+      stroke-width: 8;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1), stroke 0.4s;
+    }
+    .score-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.1;
+    }
+    .score-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .score-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .results-meta {
+      flex: 1;
+      min-width: 200px;
+    }
+    .results-poste {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0 0 0.25rem;
+    }
+    .results-entreprise {
+      color: var(--muted);
+      margin: 0 0 1rem;
+      font-size: 0.95rem;
+    }
+    .niveau-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .niveau-badge.low    { background: rgba(245,76,76,0.15);  color: #f54c4c; }
+    .niveau-badge.medium { background: rgba(245,200,76,0.15); color: var(--accent); }
+    .niveau-badge.good   { background: rgba(245,200,76,0.2);  color: var(--accent); }
+    .niveau-badge.great  { background: rgba(76,175,121,0.15); color: var(--green); }
+
+    /* Cards grid */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 680px) {
+      .results-grid { grid-template-columns: 1fr; }
+    }
+
+    .res-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.2rem;
+      animation: fadeSlideIn 0.5s ease both;
+    }
+    .res-card:nth-child(2) { animation-delay: 0.1s; }
+    .res-card:nth-child(3) { animation-delay: 0.2s; }
+
+    .res-card-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin: 0 0 0.9rem;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .tag {
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .tag.green  { background: var(--green-soft);  color: var(--green); }
+    .tag.orange { background: var(--orange-soft); color: var(--orange); }
+
+    .points-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .points-list li {
+      font-size: 0.85rem;
+      color: var(--text);
+      padding-left: 1.2rem;
+      position: relative;
+    }
+    .points-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    /* Attention card */
+    .attention-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.2rem;
+      margin-bottom: 1.5rem;
+      animation: fadeSlideIn 0.5s 0.3s ease both;
+    }
+    .attention-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .attention-list li {
+      font-size: 0.9rem;
+      color: var(--orange);
+      padding-left: 1.4rem;
+      position: relative;
+    }
+    .attention-list li::before {
+      content: '⚠';
+      position: absolute;
+      left: 0;
+      font-size: 0.8rem;
+    }
+
+    /* Recommandation */
+    .reco-card {
+      background: var(--accent-soft);
+      border: 1px solid rgba(245,200,76,0.2);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      animation: fadeSlideIn 0.5s 0.4s ease both;
+    }
+    .reco-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin: 0 0 0.75rem;
+    }
+    .reco-text {
+      color: var(--text);
+      line-height: 1.65;
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    /* Reset button */
+    .btn-reset {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.6rem;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-reset:hover { background: var(--accent-soft); }
+
+    /* Empty state tags */
+    .empty-state {
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-style: italic;
+    }
+
+    /* Responsive header */
+    @media (max-width: 500px) {
+      .header-badge { display: none; }
+      .step-heading h1 { font-size: 1.5rem; }
+      .results-header { flex-direction: column; align-items: flex-start; }
+      .score-circle { width: 100px; height: 100px; }
+      .score-number { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="matcher-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Retour au portfolio
+      </a>
+      <span class="header-title">Job Matcher 🎯</span>
+      <span class="header-badge">Intelligence Artificielle</span>
+    </div>
+  </header>
+
+  <main class="matcher-main">
+    <div class="container">
+
+      <!-- STEP 1: Upload -->
+      <div id="step-upload">
+        <div class="step-heading">
+          <h1> Tester le matching</h1>
+          <p>Collez une offre d'emploi et voyez en quelques secondes à quel point le profil de Mathis correspond.</p>
+        </div>
+
+        <!-- Drop zone -->
+        <div class="drop-zone" id="dropZone">
+          <input type="file" id="fileInput" accept=".pdf,image/jpeg,image/png,image/webp" />
+          <div class="drop-icon">🗂️</div>
+          <p class="drop-title">Glissez votre fichier ici</p>
+          <p class="drop-sub">PDF ou image (JPG, PNG, WebP) — max 15 Mo</p>
+          <p class="drop-file-selected" id="fileSelectedLabel" style="display:none;"></p>
+        </div>
+
+        <div class="or-divider">ou</div>
+
+        <textarea
+          id="offerText"
+          class="offer-textarea"
+          placeholder="Collez le texte de l'offre d'emploi ici…&#10;&#10;Exemple : Data Analyst — Paris — CDI&#10;Missions : analyse de données, Power BI, SQL..."
+        ></textarea>
+
+        <button class="btn-analyze" id="analyzeBtn">
+          <div class="loader"></div>
+          <span class="btn-label">Analyser le matching</span>
+        </button>
+
+        <div class="error-box" id="errorBox"></div>
+      </div>
+
+      <!-- STEP 2: Results -->
+      <div id="step-results">
+
+        <!-- Score header -->
+        <div class="results-header">
+          <div class="score-circle-wrap">
+            <div class="score-circle">
+              <svg width="120" height="120" viewBox="0 0 120 120">
+                <circle class="score-track" cx="60" cy="60" r="50"/>
+                <circle class="score-fill" id="scoreArc" cx="60" cy="60" r="50"
+                  stroke-dasharray="314.16"
+                  stroke-dashoffset="314.16"
+                />
+              </svg>
+              <div class="score-text">
+                <span class="score-number" id="scoreNumber">0</span>
+                <span class="score-label">/ 100</span>
+              </div>
+            </div>
+          </div>
+          <div class="results-meta">
+            <p class="results-poste" id="resPoste">—</p>
+            <p class="results-entreprise" id="resEntreprise"></p>
+            <span class="niveau-badge" id="niveauBadge">—</span>
+          </div>
+        </div>
+
+        <!-- 3 cards grid -->
+        <div class="results-grid">
+          <!-- Compétences matchées -->
+          <div class="res-card">
+            <p class="res-card-title">✅ Compétences matchées</p>
+            <div class="tags" id="tagsMatch"></div>
+          </div>
+          <!-- Compétences manquantes -->
+          <div class="res-card">
+            <p class="res-card-title">⚠️ Compétences manquantes</p>
+            <div class="tags" id="tagsMissing"></div>
+          </div>
+          <!-- Points forts -->
+          <div class="res-card">
+            <p class="res-card-title">💡 Points forts</p>
+            <ul class="points-list" id="pointsForts"></ul>
+          </div>
+        </div>
+
+        <!-- Points d'attention -->
+        <div class="attention-card" id="attentionCard">
+          <p class="res-card-title" style="color:var(--orange);font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 0.75rem;">Points d'attention</p>
+          <ul class="attention-list" id="pointsAttention"></ul>
+        </div>
+
+        <!-- Recommandation -->
+        <div class="reco-card">
+          <p class="reco-title">Recommandation</p>
+          <p class="reco-text" id="recommandation"></p>
+        </div>
+
+        <!-- Reset -->
+        <button class="btn-reset" id="resetBtn">
+          ↺ Tester une autre offre
+        </button>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const dropZone      = document.getElementById('dropZone');
+    const fileInput     = document.getElementById('fileInput');
+    const fileLabel     = document.getElementById('fileSelectedLabel');
+    const offerText     = document.getElementById('offerText');
+    const analyzeBtn    = document.getElementById('analyzeBtn');
+    const errorBox      = document.getElementById('errorBox');
+    const stepUpload    = document.getElementById('step-upload');
+    const stepResults   = document.getElementById('step-results');
+    const resetBtn      = document.getElementById('resetBtn');
+
+    let selectedFile = null;
+
+    // Drag & drop
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      const f = e.dataTransfer.files[0];
+      if (f) setFile(f);
+    });
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files[0]) setFile(fileInput.files[0]);
+    });
+
+    function setFile(f) {
+      selectedFile = f;
+      offerText.value = '';
+      fileLabel.textContent = '📎 ' + f.name;
+      fileLabel.style.display = 'block';
+    }
+
+    // Analyze
+    analyzeBtn.addEventListener('click', async () => {
+      const hasFile = !!selectedFile;
+      const hasText = offerText.value.trim().length > 10;
+
+      if (!hasFile && !hasText) {
+        showError('Veuillez fournir un fichier ou coller le texte de l\'offre.');
+        return;
+      }
+
+      setLoading(true);
+      hideError();
+
+      try {
+        let body, headers;
+
+        if (hasFile) {
+          const fd = new FormData();
+          fd.append('file', selectedFile);
+          body = fd;
+        } else {
+          body = JSON.stringify({ text: offerText.value.trim() });
+          headers = { 'Content-Type': 'application/json' };
+        }
+
+        const res = await fetch('/api/match', {
+          method: 'POST',
+          headers,
+          body,
+        });
+
+        const data = await res.json();
+        if (res.status === 429) {
+          showError(data.error || 'Limite journalière atteinte (3 analyses/jour). Revenez demain 🙂');
+          return;
+        }
+        if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+
+        renderResults(data);
+      } catch (err) {
+        const isNetworkError = err instanceof TypeError && err.message.includes('fetch');
+        showError(isNetworkError
+          ? 'Impossible de joindre le serveur. Assurez-vous que node server.js est lancé (port 3000).'
+          : (err.message || 'Une erreur est survenue. Veuillez réessayer.'));
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    // Reset
+    resetBtn.addEventListener('click', () => {
+      stepResults.classList.remove('visible');
+      stepUpload.style.display = '';
+      selectedFile = null;
+      fileInput.value = '';
+      fileLabel.style.display = 'none';
+      offerText.value = '';
+      hideError();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    function setLoading(on) {
+      analyzeBtn.disabled = on;
+      analyzeBtn.classList.toggle('loading', on);
+    }
+
+    function showError(msg) {
+      errorBox.textContent = msg;
+      errorBox.classList.add('visible');
+    }
+
+    function hideError() {
+      errorBox.classList.remove('visible');
+    }
+
+    function renderResults(d) {
+      // Poste / entreprise
+      document.getElementById('resPoste').textContent = d.poste || 'Poste non précisé';
+      document.getElementById('resEntreprise').textContent = d.entreprise || '';
+
+      // Niveau badge
+      const badge = document.getElementById('niveauBadge');
+      badge.textContent = d.niveau || '—';
+      badge.className = 'niveau-badge ' + getNiveauClass(d.score);
+
+      // Score circle animation
+      animateScore(d.score || 0);
+
+      // Tags match
+      renderTags('tagsMatch', d.competences_match || [], 'green');
+      renderTags('tagsMissing', d.competences_manquantes || [], 'orange');
+
+      // Points forts
+      const ul = document.getElementById('pointsForts');
+      ul.innerHTML = '';
+      (d.points_forts || []).forEach(p => {
+        const li = document.createElement('li');
+        li.textContent = p;
+        ul.appendChild(li);
+      });
+      if (!d.points_forts || !d.points_forts.length) {
+        ul.innerHTML = '<li style="color:var(--muted);font-style:italic;">Aucun point fort identifié</li>';
+      }
+
+      // Points attention
+      const attn = document.getElementById('pointsAttention');
+      attn.innerHTML = '';
+      (d.points_attention || []).forEach(p => {
+        const li = document.createElement('li');
+        li.textContent = p;
+        attn.appendChild(li);
+      });
+      document.getElementById('attentionCard').style.display =
+        (d.points_attention && d.points_attention.length) ? '' : 'none';
+
+      // Recommandation
+      document.getElementById('recommandation').textContent = d.recommandation || '';
+
+      // Show results
+      stepUpload.style.display = 'none';
+      stepResults.classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderTags(containerId, items, colorClass) {
+      const el = document.getElementById(containerId);
+      el.innerHTML = '';
+      if (!items.length) {
+        el.innerHTML = '<span class="empty-state">Aucune</span>';
+        return;
+      }
+      items.forEach(item => {
+        const span = document.createElement('span');
+        span.className = 'tag ' + colorClass;
+        span.textContent = item;
+        el.appendChild(span);
+      });
+    }
+
+    function getNiveauClass(score) {
+      if (score >= 90) return 'great';
+      if (score >= 75) return 'good';
+      if (score >= 50) return 'medium';
+      return 'low';
+    }
+
+    function getScoreColor(score) {
+      if (score >= 75) return '#4caf79';
+      if (score >= 50) return '#f5c84c';
+      return '#f54c4c';
+    }
+
+    function animateScore(target) {
+      const arc = document.getElementById('scoreArc');
+      const numEl = document.getElementById('scoreNumber');
+      const circumference = 314.16;
+      const color = getScoreColor(target);
+
+      arc.style.stroke = color;
+
+      // Animate number
+      let current = 0;
+      const duration = 1200;
+      const start = performance.now();
+
+      function step(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        current = Math.round(ease * target);
+        numEl.textContent = current;
+        const offset = circumference - (circumference * current / 100);
+        arc.style.strokeDashoffset = offset;
+        if (progress < 1) requestAnimationFrame(step);
+      }
+
+      requestAnimationFrame(step);
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV & Lettre Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="app-header">
+    <a href="/" class="back-link">← Retour au CV</a>
+    <h1>CV &amp; Lettre <span>Generator</span></h1>
+    <p class="subtitle">Collez une offre d'emploi · Obtenez un CV et une lettre personnalisés</p>
+  </header>
+
+  <!-- ── Step indicator ── -->
+  <nav class="step-indicator">
+    <div class="step-item active" data-step="1">
+      <div class="step-circle">1</div>
+      <span class="step-label">Offre</span>
+    </div>
+    <div class="step-sep"></div>
+    <div class="step-item" data-step="2">
+      <div class="step-circle">2</div>
+      <span class="step-label">Analyse</span>
+    </div>
+    <div class="step-sep"></div>
+    <div class="step-item" data-step="3">
+      <div class="step-circle">3</div>
+      <span class="step-label">Profil</span>
+    </div>
+    <div class="step-sep"></div>
+    <div class="step-item" data-step="4">
+      <div class="step-circle">4</div>
+      <span class="step-label">Résultats</span>
+    </div>
+  </nav>
+
+  <!-- ── Main ── -->
+  <main class="app-main">
+
+    <!-- Step 1: Upload -->
+    <section class="step-panel active" id="step-1">
+      <h2 class="step-title">Importez l'offre d'emploi</h2>
+      <p class="step-desc">Glissez un fichier PDF ou une image, collez une capture d'écran, ou saisissez le texte manuellement.</p>
+
+      <div class="upload-zone" id="upload-zone" tabindex="0" role="button" aria-label="Zone d'upload">
+        <div class="upload-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <p class="upload-title">Glissez votre fichier ici</p>
+        <p class="upload-sub">PDF, JPG, PNG, WEBP — ou collez une image (Ctrl+V)</p>
+        <div class="file-types">
+          <div class="file-type-icon">
+            <div class="icon-badge">📄</div>
+            <span>PDF</span>
+          </div>
+          <div class="file-type-icon">
+            <div class="icon-badge">🖼</div>
+            <span>Image</span>
+          </div>
+          <div class="file-type-icon">
+            <div class="icon-badge">📋</div>
+            <span>Texte</span>
+          </div>
+        </div>
+        <button class="btn ghost" id="browse-btn" type="button" style="position:relative;z-index:1">Parcourir</button>
+        <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png,.webp" class="hidden" />
+      </div>
+
+      <div class="file-preview hidden" id="file-preview">
+        <div class="preview-info">
+          <span class="preview-icon">📄</span>
+          <span class="preview-name" id="preview-filename"></span>
+          <button class="btn-remove" id="remove-file" type="button">✕ Supprimer</button>
+        </div>
+        <div id="preview-content"></div>
+      </div>
+
+      <div class="manual-toggle-row">
+        <button class="btn ghost small" id="toggle-manual" type="button">Saisir le texte manuellement</button>
+      </div>
+      <div class="hidden" id="manual-section">
+        <textarea
+          id="manual-text"
+          class="manual-textarea"
+          rows="10"
+          placeholder="Collez ici le texte complet de l'offre d'emploi…"
+        ></textarea>
+      </div>
+
+      <div class="step-actions">
+        <button class="btn primary large" id="analyze-btn" type="button">
+          <span class="btn-text">Analyser l'offre</span>
+          <span class="btn-spinner hidden">Analyse en cours…</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 2: Analysis review -->
+    <section class="step-panel" id="step-2">
+      <h2 class="step-title">Vérifiez l'analyse</h2>
+      <p class="step-desc">Corrigez ou complétez les informations extraites de l'offre avant de continuer.</p>
+
+      <div id="analysis-grid" class="analysis-grid"></div>
+
+      <div class="step-actions">
+        <button class="btn ghost" id="back-to-1" type="button">← Retour</button>
+        <button class="btn primary large" id="continue-to-3" type="button">Continuer →</button>
+      </div>
+    </section>
+
+    <!-- Step 3: Profile form -->
+    <section class="step-panel" id="step-3">
+      <h2 class="step-title">Votre profil</h2>
+      <p class="step-desc">Renseignez vos informations — elles sont sauvegardées localement pour la prochaine fois.</p>
+
+      <div class="photo-section">
+        <div class="photo-preview-wrap">
+          <div class="photo-preview" id="photo-preview">
+            <span class="photo-placeholder">👤</span>
+          </div>
+        </div>
+        <div class="photo-upload-info">
+          <h4>Photo de profil</h4>
+          <p>Ajoutez une photo professionnelle pour personnaliser votre CV (optionnel).</p>
+          <label class="btn ghost small" style="cursor:pointer">
+            Choisir une photo
+            <input type="file" id="photo-input" accept=".jpg,.jpeg,.png" class="hidden" />
+          </label>
+          <button class="btn ghost small" id="remove-photo" style="display:none; margin-left:0.5rem">Supprimer</button>
+        </div>
+      </div>
+
+      <div class="linkedin-section">
+        <div class="linkedin-header">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#0077B5"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          <h3 style="margin:0;font-size:1.1rem">Import LinkedIn</h3>
+        </div>
+        <div class="form-group" style="margin-bottom:1rem">
+          <label for="linkedin-url">URL de votre profil LinkedIn</label>
+          <input type="text" id="linkedin-url" name="linkedin" placeholder="https://www.linkedin.com/in/votre-profil" />
+        </div>
+        <div class="linkedin-import-box">
+          <p style="font-size:0.9rem;font-weight:600;margin-bottom:0.5rem">Importez automatiquement votre profil</p>
+          <div class="linkedin-instructions">
+            <ol>
+              <li>Sur votre profil LinkedIn, cliquez sur <strong>« Plus »</strong></li>
+              <li>Choisissez <strong>« Enregistrer en PDF »</strong></li>
+              <li>Importez le PDF ici — l'IA extraira tout automatiquement</li>
+            </ol>
+          </div>
+          <div class="linkedin-upload-area">
+            <label class="btn ghost small" style="cursor:pointer">
+              📄 Importer mon PDF LinkedIn
+              <input type="file" id="linkedin-pdf-input" accept=".pdf" class="hidden" />
+            </label>
+            <div id="linkedin-import-status" style="display:none"></div>
+          </div>
+        </div>
+      </div>
+
+      <form id="profile-form" autocomplete="on">
+
+        <fieldset>
+          <legend>Informations personnelles</legend>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="prenom">Prénom *</label>
+              <input type="text" id="prenom" name="prenom" placeholder="Mathis" />
+            </div>
+            <div class="form-group">
+              <label for="nom">Nom *</label>
+              <input type="text" id="nom" name="nom" placeholder="Beauchamp" />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="email@example.com" />
+            </div>
+            <div class="form-group">
+              <label for="telephone">Téléphone</label>
+              <input type="tel" id="telephone" name="telephone" placeholder="+33 6 00 00 00 00" />
+            </div>
+            <div class="form-group">
+              <label for="localisation">Localisation</label>
+              <input type="text" id="localisation" name="localisation" placeholder="Paris, France" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="resume_pro">Résumé professionnel</label>
+            <textarea id="resume_pro" name="resume_pro" rows="3" placeholder="En quelques phrases, décrivez votre profil et vos ambitions…"></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Expériences professionnelles</legend>
+          <div id="experiences-container"></div>
+          <button class="btn-add" id="add-exp" type="button">+ Ajouter une expérience</button>
+        </fieldset>
+
+        <fieldset>
+          <legend>Formation</legend>
+          <div id="education-container"></div>
+          <button class="btn-add" id="add-edu" type="button">+ Ajouter une formation</button>
+        </fieldset>
+
+        <fieldset>
+          <legend>Compétences &amp; Langues</legend>
+          <div class="form-group">
+            <label for="competences_tech">Compétences techniques</label>
+            <textarea id="competences_tech" name="competences_tech" rows="2" placeholder="Python, SQL, Power BI, Excel, React…"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="soft_skills">Soft skills</label>
+            <textarea id="soft_skills" name="soft_skills" rows="2" placeholder="Leadership, communication, esprit d'analyse…"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="langues">Langues</label>
+            <input type="text" id="langues" name="langues" placeholder="Français (natif), Anglais (C1)…" />
+          </div>
+          <div class="form-group">
+            <label for="certifications">Certifications</label>
+            <textarea id="certifications" name="certifications" rows="2" placeholder="PSM I, TOSA Excel, …"></textarea>
+          </div>
+        </fieldset>
+
+      </form>
+
+      <div class="step-actions">
+        <button class="btn ghost" id="back-to-2" type="button">← Retour</button>
+        <button class="btn primary large" id="generate-btn" type="button">
+          <span class="btn-text">Générer ✦</span>
+          <span class="btn-spinner hidden">Génération en cours…</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Step 4: Results -->
+    <section class="step-panel" id="step-4">
+      <h2 class="step-title">Vos documents générés</h2>
+      <p class="step-desc">Exportez en PDF, copiez ou régénérez selon vos besoins.</p>
+
+      <div class="results-tabs">
+        <button class="tab-btn active" data-tab="cv">CV</button>
+        <button class="tab-btn" data-tab="letter">Lettre de motivation</button>
+      </div>
+
+      <!-- CV tab -->
+      <div class="tab-content active" id="tab-cv">
+        <div class="result-actions">
+          <button class="btn primary" id="export-cv-btn" type="button">⬇ Exporter PDF</button>
+          <button class="btn ghost" id="regen-cv-btn" type="button">
+            <span class="btn-text">↺ Régénérer</span>
+            <span class="btn-spinner hidden">Génération…</span>
+          </button>
+          <button class="btn ghost" id="back-to-3" type="button">← Modifier le profil</button>
+        </div>
+        <div id="cv-preview"></div>
+      </div>
+
+      <!-- Letter tab -->
+      <div class="tab-content" id="tab-letter">
+        <div class="result-actions">
+          <button class="btn primary" id="export-letter-btn" type="button">⬇ Exporter PDF</button>
+          <button class="btn ghost" id="copy-letter-btn" type="button">⎘ Copier</button>
+          <button class="btn ghost" id="regen-letter-btn" type="button">
+            <span class="btn-text">↺ Régénérer</span>
+            <span class="btn-spinner hidden">Génération…</span>
+          </button>
+        </div>
+        <div id="letter-preview"></div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ── Toast ── -->
+  <div class="toast" id="toast" role="alert"></div>
+
+  <!-- html2pdf CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
