@@ -69,11 +69,12 @@ function handleFormSubmit(event) {
   btn.textContent = 'Envoi en cours…';
   if (feedback) { feedback.textContent = ''; feedback.style.color = ''; }
 
+  // Utilise form.elements pour éviter le conflit avec l'attribut .name de l'élément form
   const params = {
-    from_name:  form.name.value.trim(),
-    from_email: form.email.value.trim(),
-    message:    form.message.value.trim(),
-    reply_to:   form.email.value.trim(),
+    from_name:  (form.elements['name']    || {value: ''}).value.trim(),
+    from_email: (form.elements['email']   || {value: ''}).value.trim(),
+    message:    (form.elements['message'] || {value: ''}).value.trim(),
+    reply_to:   (form.elements['email']   || {value: ''}).value.trim(),
   };
 
   if (typeof emailjs === 'undefined') {
