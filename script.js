@@ -58,7 +58,10 @@ try {
 
 // ============================================================
 // Formulaire de contact principal
+// (listener attaché ici pour respecter la CSP sans 'unsafe-inline')
 // ============================================================
+document.querySelector('.contact-form')?.addEventListener('submit', handleFormSubmit);
+
 function handleFormSubmit(event) {
   event.preventDefault();
   const form     = event.target;
