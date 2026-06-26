@@ -477,6 +477,79 @@
       font-style: italic;
     }
 
+    /* Drop zone — état fichier chargé */
+    .drop-zone.has-file {
+      border-color: var(--green);
+      border-style: solid;
+      background: rgba(76, 175, 121, 0.08);
+    }
+    .drop-zone.has-file .drop-icon,
+    .drop-zone.has-file .drop-title,
+    .drop-zone.has-file .drop-sub { display: none; }
+    .file-ready {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      pointer-events: none;
+    }
+    .drop-zone.has-file .file-ready { display: flex; }
+    .file-ready-icon { font-size: 2.4rem; }
+    .file-ready-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--green);
+      margin: 0;
+      max-width: 320px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .file-ready-size { font-size: 0.8rem; color: var(--muted); margin: 0; }
+    .file-ready-hint { font-size: 0.78rem; color: var(--muted); margin: 0.3rem 0 0; }
+
+    /* Overlay de chargement */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 6, 8, 0.88);
+      z-index: 200;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .loading-overlay.visible {
+      display: flex;
+      animation: fadeIn 0.25s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .loading-ring {
+      width: 68px;
+      height: 68px;
+      border: 4px solid rgba(245, 200, 76, 0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.85s linear infinite;
+    }
+    .loading-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0;
+    }
+    .loading-subtitle {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin: 0;
+      text-align: center;
+      max-width: 280px;
+      line-height: 1.5;
+    }
+
     /* Responsive header */
     @media (max-width: 500px) {
       .header-badge { display: none; }
@@ -519,7 +592,12 @@
           <div class="drop-icon">🗂️</div>
           <p class="drop-title">Glissez votre fichier ici</p>
           <p class="drop-sub">PDF ou image (JPG, PNG, WebP) — max 15 Mo</p>
-          <p class="drop-file-selected" id="fileSelectedLabel" style="display:none;"></p>
+          <div class="file-ready">
+            <div class="file-ready-icon">✅</div>
+            <p class="file-ready-name" id="fileReadyName"></p>
+            <p class="file-ready-size" id="fileReadySize"></p>
+            <p class="file-ready-hint">Cliquer pour changer de fichier</p>
+          </div>
         </div>
 
         <div class="or-divider">ou</div>
@@ -606,10 +684,16 @@
     </div>
   </main>
 
+  <!-- Overlay de chargement -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-ring"></div>
+    <p class="loading-title">Analyse en cours…</p>
+    <p class="loading-subtitle">L'IA compare l'offre avec le profil de Mathis</p>
+  </div>
+
   <script>
     const dropZone      = document.getElementById('dropZone');
     const fileInput     = document.getElementById('fileInput');
-    const fileLabel     = document.getElementById('fileSelectedLabel');
     const offerText     = document.getElementById('offerText');
     const analyzeBtn    = document.getElementById('analyzeBtn');
     const errorBox      = document.getElementById('errorBox');
@@ -635,8 +719,12 @@
     function setFile(f) {
       selectedFile = f;
       offerText.value = '';
-      fileLabel.textContent = '📎 ' + f.name;
-      fileLabel.style.display = 'block';
+      const sizeStr = f.size < 1024 * 1024
+        ? Math.round(f.size / 1024) + ' Ko'
+        : (f.size / (1024 * 1024)).toFixed(1) + ' Mo';
+      document.getElementById('fileReadyName').textContent = f.name;
+      document.getElementById('fileReadySize').textContent = sizeStr;
+      dropZone.classList.add('has-file');
     }
 
     // Analyze
@@ -694,7 +782,9 @@
       stepUpload.style.display = '';
       selectedFile = null;
       fileInput.value = '';
-      fileLabel.style.display = 'none';
+      dropZone.classList.remove('has-file');
+      document.getElementById('fileReadyName').textContent = '';
+      document.getElementById('fileReadySize').textContent = '';
       offerText.value = '';
       hideError();
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -703,6 +793,7 @@
     function setLoading(on) {
       analyzeBtn.disabled = on;
       analyzeBtn.classList.toggle('loading', on);
+      document.getElementById('loadingOverlay').classList.toggle('visible', on);
     }
 
     function showError(msg) {
