@@ -76,9 +76,9 @@ app.use((req, res, next) => {
 });
 
 // ── Routes HTML (AVANT express.static) ───────────────────────
-app.get('/',          (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('/',          (req, res) => { res.setHeader('Cache-Control', 'no-cache'); res.sendFile(path.join(__dirname, 'index.html')); });
 app.get('/generator', (req, res) => res.redirect(301, '/'));
-app.get('/matcher',   (req, res) => res.sendFile(path.join(__dirname, 'matcher',   'index.html')));
+app.get('/matcher',   (req, res) => { res.setHeader('Cache-Control', 'no-cache'); res.sendFile(path.join(__dirname, 'matcher', 'index.html')); });
 
 // ── Assets statiques ─────────────────────────────────────────
 app.use(express.static(__dirname, {
@@ -352,10 +352,10 @@ function handleMulterError(err, req, res, next) {
 
 // ── Matcher route ─────────────────────────────────────────────
 app.post('/api/match', upload.single('file'), handleMulterError, async (req, res) => {
-  const limit = checkLimit(req, 'match', 3);
+  const limit = checkLimit(req, 'match', 5);
   if (!limit.allowed) {
     return res.status(429).json({
-      error: `Limite journalière atteinte (3 analyses/jour). Revenez demain 🙂`,
+      error: `Limite journalière atteinte (5 analyses/jour). Revenez demain 🙂`,
       limit: true,
     });
   }
