@@ -189,6 +189,18 @@ ATOUTS DIFFÉRENCIANTS :
 - Profil polyvalent : data + gestion de projet + automatisation + conformité + développement IA
 - Sportif semi-professionnel (volleyball, Coupe de France Fédérale 2026) : résilience, esprit d'équipe, leadership
 - Passionné d'IA : intègre des solutions IA dans ses projets personnels (Claude API, RAG, chatbot)
+
+SOFT SKILLS (prouvés par des résultats concrets) :
+- Leadership : Capitaine de l'équipe de volleyball (niveau national, Coupe de France Fédérale 2026) — prise de décision, management de groupe, responsabilité collective.
+- Esprit d'équipe : Collaboration transverse au sein de la Direction Opérations SG (7 Centres de Services) et en environnement bancaire pluridisciplinaire.
+- Rigueur & fiabilité : Réduction des délais de conformité de J+23 à J+1 (BNP Paribas) et de J+20 à J (Société Générale) — résultats mesurables, zéro marge d'erreur acceptée.
+- Gestion de projet & organisation : Certifié PSM I (Scrum), pilotage de 2 projets data prioritaires SGRF, coordination de 7 Centres de Services.
+- Communication & présentation : Accompagnement de 50+ étudiants internationaux (EIC Montréal), reporting de KPI à la direction, interactions transversales régulières.
+- Autonomie & initiative : Projets IA personnels développés en autodidacte (Claude API, RAG, chatbot), forte autonomie sur des missions stratégiques en alternance.
+- Adaptabilité : Immersion internationale en Finlande (semestre) et au Canada (stage 6 mois), intégration dans des environnements professionnels culturellement différents.
+- Curiosité & apprentissage continu : Veille active en IA/Data, intégration de technologies émergentes dans des projets concrets (scikit-learn, LLM, Claude API).
+- Capacité d'analyse : 2+ ans d'analyse de données bancaires, projets data sous Tableau Desktop, Python/scikit-learn, SQL — dashboards interactifs, KPI opérationnels.
+- Résilience : Parcours sportif SHN (Statut Haut Niveau — Volley), gestion de la pression et maintien de la performance sur le long terme.
 `.trim();
 
 // ── Constructeur de prompts RAG ───────────────────────────────
@@ -390,15 +402,21 @@ app.post('/api/match', upload.single('file'), handleMulterError, async (req, res
 
 ${MATHIS_PROFILE}
 
-Évalue le matching de manière rigoureuse et objective. Retourne UNIQUEMENT un objet JSON valide (sans balises markdown) :
+INSTRUCTIONS D'ÉVALUATION :
+1. Hard skills (compétences techniques) : 70 % du score.
+2. Soft skills : 30 % du score. Évalue UNIQUEMENT les soft skills listés dans la section "SOFT SKILLS" du profil ci-dessus, avec leurs preuves concrètes. N'invente aucun soft skill absent du profil.
+3. Identifie les soft skills requis ou valorisés par l'offre, croise-les avec ceux du profil.
+
+Retourne UNIQUEMENT un objet JSON valide (sans balises markdown) :
 {
   "score": <entier 0-100>,
   "niveau": "<Faible match|Moyen match|Bon match|Excellent match>",
-  "competences_match": ["compétence1", "compétence2"],
-  "competences_manquantes": ["compétence1", "compétence2"],
+  "competences_match": ["compétence technique 1", "compétence technique 2"],
+  "competences_manquantes": ["compétence manquante 1"],
+  "soft_skills_match": ["Leadership (preuve : capitaine volleyball national)", "Rigueur (preuve : délai J+23→J+1 BNP)"],
   "points_forts": ["point fort 1", "point fort 2"],
   "points_attention": ["point d'attention 1"],
-  "recommandation": "Texte de recommandation détaillé (3-4 phrases)",
+  "recommandation": "Texte détaillé (3-4 phrases), incluant les soft skills pertinents identifiés.",
   "poste": "intitulé du poste",
   "entreprise": "nom de l'entreprise ou vide si non mentionné"
 }
@@ -408,6 +426,11 @@ Barème :
 - 50–74 : Moyen match (quelques compétences communes, manques significatifs)
 - 75–89 : Bon match (bonne adéquation, compétences clés présentes)
 - 90–100 : Excellent match (profil quasi-idéal)
+
+Règles soft_skills_match :
+- Inclure uniquement les soft skills du profil qui correspondent aux besoins explicites ou implicites de l'offre.
+- Chaque entrée doit citer la preuve concrète entre parenthèses.
+- Tableau vide [] si aucun soft skill n'est pertinent.
 
 Sois rigoureux. Ne surestime pas le score.`.trim();
 

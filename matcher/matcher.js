@@ -1,14 +1,17 @@
-const dropZone   = document.getElementById('dropZone');
-const fileInput  = document.getElementById('fileInput');
-const offerText  = document.getElementById('offerText');
-const analyzeBtn = document.getElementById('analyzeBtn');
-const errorBox   = document.getElementById('errorBox');
-const stepUpload = document.getElementById('step-upload');
-const stepResults= document.getElementById('step-results');
-const resetBtn   = document.getElementById('resetBtn');
+const dropZone    = document.getElementById('dropZone');
+const fileInput   = document.getElementById('fileInput');
+const offerText   = document.getElementById('offerText');
+const analyzeBtn  = document.getElementById('analyzeBtn');
+const errorBox    = document.getElementById('errorBox');
+const stepUpload  = document.getElementById('step-upload');
+const stepResults = document.getElementById('step-results');
+const resetBtn    = document.getElementById('resetBtn');
+const exportPdfBtn= document.getElementById('exportPdfBtn');
 
-let selectedFile = null;
+let selectedFile    = null;
+let _progressTimer  = null;
 
+// ── Drag & drop ──────────────────────────────────────────────
 dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
 dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
 dropZone.addEventListener('drop', e => {
@@ -32,6 +35,7 @@ function setFile(f) {
   dropZone.classList.add('has-file');
 }
 
+// ── Analyse ──────────────────────────────────────────────────
 analyzeBtn.addEventListener('click', async () => {
   const hasFile = !!selectedFile;
   const hasText = offerText.value.trim().length > 10;
@@ -46,7 +50,6 @@ analyzeBtn.addEventListener('click', async () => {
 
   try {
     let body, headers;
-
     if (hasFile) {
       const fd = new FormData();
       fd.append('file', selectedFile);
@@ -56,7 +59,7 @@ analyzeBtn.addEventListener('click', async () => {
       headers = { 'Content-Type': 'application/json' };
     }
 
-    const res = await fetch('/api/match', { method: 'POST', headers, body });
+    const res  = await fetch('/api/match', { method: 'POST', headers, body });
     const data = await res.json();
 
     if (res.status === 429) {
@@ -76,6 +79,7 @@ analyzeBtn.addEventListener('click', async () => {
   }
 });
 
+// ── Reset ────────────────────────────────────────────────────
 resetBtn.addEventListener('click', () => {
   stepResults.classList.remove('visible');
   stepUpload.style.display = '';
@@ -89,10 +93,57 @@ resetBtn.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
+// ── Export PDF ───────────────────────────────────────────────
+exportPdfBtn.addEventListener('click', () => {
+  const printDate = document.getElementById('printDate');
+  if (printDate) {
+    printDate.textContent = new Date().toLocaleDateString('fr-FR', {
+      day: '2-digit', month: 'long', year: 'numeric'
+    });
+  }
+  window.print();
+});
+
+// ── Progress bar ─────────────────────────────────────────────
+function startProgress() {
+  let pct = 0;
+  const bar   = document.getElementById('progressBar');
+  const pctEl = document.getElementById('progressPct');
+  bar.style.width  = '0%';
+  pctEl.textContent = '0 %';
+
+  _progressTimer = setInterval(() => {
+    if (pct < 92) {
+      const remaining = 92 - pct;
+      const step = Math.max(0.4, remaining * 0.055 + Math.random() * 1.8);
+      pct = Math.min(92, pct + step);
+      const rounded = Math.round(pct);
+      bar.style.width  = rounded + '%';
+      pctEl.textContent = rounded + ' %';
+    }
+  }, 200);
+}
+
+function completeProgress() {
+  clearInterval(_progressTimer);
+  const bar   = document.getElementById('progressBar');
+  const pctEl = document.getElementById('progressPct');
+  bar.style.width  = '100%';
+  pctEl.textContent = '100 %';
+}
+
+// ── Loading state ────────────────────────────────────────────
 function setLoading(on) {
   analyzeBtn.disabled = on;
   analyzeBtn.classList.toggle('loading', on);
-  document.getElementById('loadingOverlay').classList.toggle('visible', on);
+  const overlay = document.getElementById('loadingOverlay');
+  if (on) {
+    overlay.classList.add('visible');
+    startProgress();
+  } else {
+    completeProgress();
+    setTimeout(() => overlay.classList.remove('visible'), 380);
+  }
 }
 
 function showError(msg) {
@@ -104,18 +155,20 @@ function hideError() {
   errorBox.classList.remove('visible');
 }
 
+// ── Rendu des résultats ──────────────────────────────────────
 function renderResults(d) {
-  document.getElementById('resPoste').textContent = d.poste || 'Poste non précisé';
+  document.getElementById('resPoste').textContent      = d.poste || 'Poste non précisé';
   document.getElementById('resEntreprise').textContent = d.entreprise || '';
 
-  const badge = document.getElementById('niveauBadge');
+  const badge       = document.getElementById('niveauBadge');
   badge.textContent = d.niveau || '—';
-  badge.className = 'niveau-badge ' + getNiveauClass(d.score);
+  badge.className   = 'niveau-badge ' + getNiveauClass(d.score);
 
   animateScore(d.score || 0);
   renderTags('tagsMatch',   d.competences_match      || [], 'green');
   renderTags('tagsMissing', d.competences_manquantes || [], 'orange');
 
+  // Points forts
   const ul = document.getElementById('pointsForts');
   ul.innerHTML = '';
   (d.points_forts || []).forEach(p => {
@@ -127,6 +180,23 @@ function renderResults(d) {
     ul.innerHTML = '<li style="color:var(--muted);font-style:italic;">Aucun point fort identifié</li>';
   }
 
+  // Soft skills
+  const ssList = document.getElementById('softSkillsList');
+  const ssCard = document.getElementById('softSkillsCard');
+  ssList.innerHTML = '';
+  const softSkills = d.soft_skills_match || [];
+  if (softSkills.length) {
+    softSkills.forEach(s => {
+      const li = document.createElement('li');
+      li.textContent = s;
+      ssList.appendChild(li);
+    });
+    ssCard.style.display = '';
+  } else {
+    ssCard.style.display = 'none';
+  }
+
+  // Points d'attention
   const attn = document.getElementById('pointsAttention');
   attn.innerHTML = '';
   (d.points_attention || []).forEach(p => {
@@ -179,9 +249,9 @@ function animateScore(target) {
 
   arc.style.stroke = getScoreColor(target);
 
-  let current = 0;
-  const duration = 1200;
-  const start   = performance.now();
+  let current      = 0;
+  const duration   = 1200;
+  const start      = performance.now();
 
   function step(now) {
     const elapsed  = now - start;

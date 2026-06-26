@@ -517,12 +517,12 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(5, 6, 8, 0.88);
+      background: rgba(5, 6, 8, 0.9);
       z-index: 200;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1.2rem;
+      gap: 1.4rem;
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
     }
@@ -531,14 +531,6 @@
       animation: fadeIn 0.25s ease;
     }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .loading-ring {
-      width: 68px;
-      height: 68px;
-      border: 4px solid rgba(245, 200, 76, 0.2);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.85s linear infinite;
-    }
     .loading-title {
       font-size: 1.15rem;
       font-weight: 700;
@@ -546,12 +538,167 @@
       margin: 0;
     }
     .loading-subtitle {
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       color: var(--muted);
       margin: 0;
       text-align: center;
-      max-width: 280px;
+      max-width: 300px;
       line-height: 1.5;
+    }
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: 280px;
+    }
+    .progress-bar-bg {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #f5c84c, #f3a93a);
+      border-radius: 3px;
+      transition: width 0.25s ease;
+      box-shadow: 0 0 8px rgba(245, 200, 76, 0.5);
+    }
+    .progress-pct {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 42px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Soft skills card */
+    .soft-skills-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.2rem;
+      margin-bottom: 1.5rem;
+      animation: fadeSlideIn 0.5s 0.25s ease both;
+    }
+    .soft-skills-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .soft-skills-list li {
+      font-size: 0.82rem;
+      color: var(--text);
+      background: rgba(100, 160, 255, 0.08);
+      border: 1px solid rgba(100, 160, 255, 0.22);
+      border-radius: 999px;
+      padding: 0.3rem 0.8rem;
+    }
+
+    /* Bouton export PDF */
+    .btn-export-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.6rem;
+      background: transparent;
+      border: 1px solid rgba(100, 160, 255, 0.4);
+      color: #7eb8ff;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      margin-left: 0.75rem;
+    }
+    .btn-export-pdf:hover { background: rgba(100, 160, 255, 0.08); border-color: #7eb8ff; }
+
+    /* Boutons reset + export côte à côte */
+    .results-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-top: 0.5rem;
+    }
+
+    /* ── Print / Export PDF ───────────────────────────────── */
+    .print-header { display: none; }
+
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+      body {
+        background: #ffffff !important;
+        color: #111 !important;
+        font-size: 11pt;
+        font-family: system-ui, sans-serif;
+      }
+
+      .matcher-header,
+      #step-upload,
+      .loading-overlay,
+      .btn-reset,
+      .btn-export-pdf,
+      .results-actions { display: none !important; }
+
+      #step-results { display: block !important; }
+
+      .print-header {
+        display: block;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #f5c84c;
+      }
+      .print-header h2 { margin: 0 0 0.2rem; font-size: 1.2rem; color: #111; }
+      .print-header p  { margin: 0; font-size: 0.85rem; color: #666; }
+
+      .results-header {
+        background: #f9f9f9 !important;
+        border: 1px solid #ddd !important;
+        border-radius: 12px;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .score-number { color: #111 !important; }
+      .results-poste { color: #111 !important; }
+      .results-entreprise { color: #555 !important; }
+
+      .res-card, .soft-skills-card, .attention-card {
+        background: #f9f9f9 !important;
+        border: 1px solid #ddd !important;
+        border-radius: 12px;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        margin-bottom: 0.75rem;
+      }
+
+      .reco-card {
+        background: #fffbee !important;
+        border: 1px solid #f5c84c !important;
+        border-radius: 12px;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .tag.green  { background: rgba(76,175,121,0.18) !important; color: #1a6b3f !important; }
+      .tag.orange { background: rgba(245,124,76,0.18) !important; color: #8b3200 !important; }
+
+      .niveau-badge { color: #333 !important; }
+      .res-card-title { color: #444 !important; }
+      .reco-text, .points-list li, .attention-list li, .soft-skills-list li {
+        color: #222 !important;
+      }
+      .reco-title { color: #a07a00 !important; }
+
+      @page { margin: 15mm; size: A4; }
     }
 
     /* Responsive header */
@@ -666,6 +813,12 @@
           </div>
         </div>
 
+        <!-- Soft skills -->
+        <div class="soft-skills-card" id="softSkillsCard" style="display:none;">
+          <p class="res-card-title">🤝 Soft skills détectés</p>
+          <ul class="soft-skills-list" id="softSkillsList"></ul>
+        </div>
+
         <!-- Points d'attention -->
         <div class="attention-card" id="attentionCard">
           <p class="res-card-title" style="color:var(--orange);font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 0.75rem;">Points d'attention</p>
@@ -678,10 +831,17 @@
           <p class="reco-text" id="recommandation"></p>
         </div>
 
-        <!-- Reset -->
-        <button class="btn-reset" id="resetBtn">
-          ↺ Tester une autre offre
-        </button>
+        <!-- En-tête print uniquement -->
+        <div class="print-header">
+          <h2>Analyse de matching — Mathis Beauchamp</h2>
+          <p>Portfolio IA · mathisbeauchamp.fr · Généré le <span id="printDate"></span></p>
+        </div>
+
+        <!-- Actions -->
+        <div class="results-actions">
+          <button class="btn-reset" id="resetBtn">↺ Tester une autre offre</button>
+          <button class="btn-export-pdf" id="exportPdfBtn">📄 Exporter en PDF</button>
+        </div>
 
       </div>
 
@@ -690,9 +850,14 @@
 
   <!-- Overlay de chargement -->
   <div class="loading-overlay" id="loadingOverlay">
-    <div class="loading-ring"></div>
     <p class="loading-title">Analyse en cours…</p>
-    <p class="loading-subtitle">L'IA compare l'offre avec le profil de Mathis</p>
+    <div class="progress-wrap">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+      <span class="progress-pct" id="progressPct">0 %</span>
+    </div>
+    <p class="loading-subtitle">L'IA analyse l'offre et la compare avec le profil de Mathis</p>
   </div>
 
   <script src="/matcher/matcher.js" defer></script>

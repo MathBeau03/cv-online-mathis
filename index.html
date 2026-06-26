@@ -84,8 +84,10 @@
     <div class="hero-content container">
 
       <nav class="top-nav" aria-label="Navigation principale">
-        <div class="logo" aria-hidden="true" style="visibility:hidden;width:0;padding:0;border:none;overflow:hidden;"></div>
-        <ul class="nav-links" role="list">
+        <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="navLinks">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links" id="navLinks" role="list">
           <li><a href="#education">Formation</a></li>
           <li><a href="#about">Qui suis-je ?</a></li>
           <li><a href="#experience">Expériences</a></li>
@@ -931,6 +933,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=2" defer></script>
+  <script src="script.js?v=3" defer></script>
 </body>
 </html>
