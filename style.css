@@ -2439,4 +2439,25 @@ textarea:focus-visible {
   );
 }
 
+/* ── Projet placeholder (Mémoire) ───────────────────────────── */
+.proj-placeholder-zone {
+  margin-top: 1rem;
+  min-height: 64px;
+  border: 1.5px dashed rgba(245, 200, 76, 0.45);
+  border-radius: 10px;
+  background: rgba(245, 200, 76, 0.04);
+}
+
+/* ── Mobile 480px — ajustements fin ─────────────────────────── */
+@media (max-width: 480px) {
+  .section-content h2 { font-size: 1.55rem; }
+  .hero-subtitle      { font-size: 0.9rem; }
+  .btn                { font-size: 0.88rem; padding: 0.58rem 1.15rem; }
+  .hero-actions       { gap: 0.6rem; }
+  .hero-stats         { gap: 0.8rem 1.1rem; }
+  .proj-card          { width: 90%; }
+  .skill-card         { width: 90%; }
+  .exp-card           { padding: 1.2rem 1rem; }
+}
+
 

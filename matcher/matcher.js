@@ -10,6 +10,7 @@ const exportPdfBtn= document.getElementById('exportPdfBtn');
 
 let selectedFile    = null;
 let _progressTimer  = null;
+let lastMatchData   = null;
 
 // ── Drag & drop ──────────────────────────────────────────────
 dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
@@ -95,13 +96,15 @@ resetBtn.addEventListener('click', () => {
 
 // ── Export PDF ───────────────────────────────────────────────
 exportPdfBtn.addEventListener('click', () => {
-  const printDate = document.getElementById('printDate');
-  if (printDate) {
-    printDate.textContent = new Date().toLocaleDateString('fr-FR', {
-      day: '2-digit', month: 'long', year: 'numeric'
-    });
+  if (!lastMatchData) {
+    alert('Aucun résultat à exporter. Analysez d\'abord une offre d\'emploi.');
+    return;
   }
-  window.print();
+  if (typeof window.jspdf === 'undefined') {
+    alert('La bibliothèque PDF n\'est pas encore chargée. Rechargez la page et réessayez.');
+    return;
+  }
+  generatePDF(lastMatchData);
 });
 
 // ── Progress bar ─────────────────────────────────────────────
@@ -157,6 +160,7 @@ function hideError() {
 
 // ── Rendu des résultats ──────────────────────────────────────
 function renderResults(d) {
+  lastMatchData = d;
   document.getElementById('resPoste').textContent      = d.poste || 'Poste non précisé';
   document.getElementById('resEntreprise').textContent = d.entreprise || '';
 
@@ -264,4 +268,173 @@ function animateScore(target) {
   }
 
   requestAnimationFrame(step);
+}
+
+// ── Génération PDF (jsPDF) ────────────────────────────────────
+function generatePDF(d) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
+  const M  = 18;
+  const PW = 210;
+  const W  = PW - M * 2;
+  let y    = M;
+
+  const sv = d.score || 0;
+  const CS = sv >= 75 ? [40, 160, 90] : sv >= 50 ? [200, 155, 20] : [210, 60, 60];
+
+  // Header band
+  doc.setFillColor(20, 21, 30);
+  doc.rect(0, 0, PW, 34, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(15);
+  doc.setTextColor(200, 160, 40);
+  doc.text('Mathis Beauchamp', M, 13);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8.5);
+  doc.setTextColor(140, 140, 150);
+  const dateStr = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+  doc.text('Analyse de matching - ' + dateStr, M, 20);
+  doc.text('mathisbeauchamp.fr', M, 27);
+
+  y = 44;
+
+  // Score block
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(40);
+  doc.setTextColor(CS[0], CS[1], CS[2]);
+  doc.text(String(sv), M, y + 13);
+  const scoreW = doc.getTextWidth(String(sv));
+  doc.setFontSize(13);
+  doc.setTextColor(140, 140, 150);
+  doc.text('/100', M + scoreW + 1, y + 13);
+
+  const rx = M + Math.max(scoreW + 22, 30);
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(30, 30, 40);
+  const posteLines = doc.splitTextToSize(d.poste || 'Poste non precise', W - (rx - M));
+  doc.text(posteLines, rx, y + 5);
+
+  let ryOff = posteLines.length * 5.8 + 6;
+  if (d.entreprise) {
+    doc.setFontSize(9.5);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(110, 110, 120);
+    doc.text(d.entreprise, rx, y + ryOff);
+    ryOff += 5.5;
+  }
+  doc.setFontSize(8.5);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(CS[0], CS[1], CS[2]);
+  doc.text(d.niveau || '', rx, y + ryOff);
+
+  y += 24;
+  doc.setDrawColor(215, 215, 220);
+  doc.line(M, y, M + W, y);
+  y += 8;
+
+  // Helpers
+  function checkPage(needed) {
+    if (y + (needed || 14) > 274) { doc.addPage(); y = M; }
+  }
+
+  function section(title) {
+    checkPage(18);
+    y += 3;
+    doc.setFontSize(7.5);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(120, 120, 135);
+    doc.text(title, M, y);
+    y += 4;
+    doc.setDrawColor(220, 220, 225);
+    doc.line(M, y, M + W, y);
+    y += 5;
+  }
+
+  function pdfTags(items, cText, cBg) {
+    if (!items || !items.length) {
+      doc.setFontSize(8.5);
+      doc.setFont('helvetica', 'italic');
+      doc.setTextColor(160, 160, 170);
+      doc.text('Aucune', M, y);
+      y += 7;
+      return;
+    }
+    doc.setFontSize(8.5);
+    doc.setFont('helvetica', 'normal');
+    let x = M;
+    items.forEach(item => {
+      const tw = doc.getTextWidth(item);
+      const bw = tw + 5;
+      const bh = 5.5;
+      if (x + bw > M + W) { x = M; y += bh + 2.5; checkPage(bh + 5); }
+      doc.setFillColor(cBg[0], cBg[1], cBg[2]);
+      doc.roundedRect(x, y - 4, bw, bh, 1.5, 1.5, 'F');
+      doc.setTextColor(cText[0], cText[1], cText[2]);
+      doc.text(item, x + 2.5, y);
+      x += bw + 3;
+    });
+    y += 9;
+  }
+
+  function pdfBullets(items, cText) {
+    if (!items || !items.length) return;
+    doc.setFontSize(9.5);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(cText[0], cText[1], cText[2]);
+    items.forEach(item => {
+      checkPage(10);
+      const lines = doc.splitTextToSize('- ' + item, W - 4);
+      doc.text(lines, M + 2, y);
+      y += lines.length * 5.2 + 2;
+    });
+    y += 2;
+  }
+
+  // Sections
+  section('COMPETENCES MATCHEES');
+  pdfTags(d.competences_match, [25, 100, 60], [215, 240, 228]);
+
+  section('COMPETENCES MANQUANTES');
+  pdfTags(d.competences_manquantes, [160, 70, 15], [250, 230, 215]);
+
+  if (d.soft_skills_match && d.soft_skills_match.length) {
+    section('SOFT SKILLS DETECTES');
+    pdfBullets(d.soft_skills_match, [60, 110, 210]);
+  }
+
+  if (d.points_forts && d.points_forts.length) {
+    section('POINTS FORTS');
+    pdfBullets(d.points_forts, [35, 35, 45]);
+  }
+
+  if (d.points_attention && d.points_attention.length) {
+    section("POINTS D'ATTENTION");
+    pdfBullets(d.points_attention, [180, 80, 20]);
+  }
+
+  section('RECOMMANDATION');
+  if (d.recommandation) {
+    checkPage(20);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(35, 35, 45);
+    const rlines = doc.splitTextToSize(d.recommandation, W);
+    doc.text(rlines, M, y);
+    y += rlines.length * 5.5 + 4;
+  }
+
+  // Footer on each page
+  const np = doc.internal.getNumberOfPages();
+  for (let p = 1; p <= np; p++) {
+    doc.setPage(p);
+    doc.setFontSize(7);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(160, 160, 170);
+    doc.text('Mathis Beauchamp - mathisbeauchamp.fr - Page ' + p + '/' + np, M, 289);
+  }
+
+  const slug = (d.poste || 'offre').replace(/[^a-z0-9]+/gi, '-').toLowerCase().slice(0, 25);
+  doc.save('matching-mathis-beauchamp-' + slug + '.pdf');
 }
