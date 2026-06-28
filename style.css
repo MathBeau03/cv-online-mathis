@@ -2077,26 +2077,54 @@ p {
    Timeline Formation — horizontale
 ══════════════════════════════════════════════════════════════ */
 
-.edu-timeline-wrap {
+.edu-nav-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
   margin-top: 2.2rem;
+}
+
+.edu-arrow {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: rgba(10, 11, 17, 0.75);
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    border-color 0.2s ease,
+    background   0.2s ease,
+    color        0.2s ease,
+    opacity      0.25s ease,
+    transform    0.2s ease;
+}
+.edu-arrow:hover {
+  border-color: rgba(245, 200, 76, 0.5);
+  color: var(--accent);
+  background: rgba(245, 200, 76, 0.07);
+  transform: scale(1.05);
+}
+.edu-arrow--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.edu-timeline-wrap {
+  flex: 1;
+  min-width: 0;
   overflow-x: auto;
   overflow-y: visible;
-  padding-bottom: 0.5rem;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
+  padding-bottom: 0.4rem;
+  scrollbar-width: none;
 }
 
 .edu-timeline-wrap::-webkit-scrollbar {
-  height: 4px;
-}
-
-.edu-timeline-wrap::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.edu-timeline-wrap::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 2px;
+  display: none;
 }
 
 /* Track flex */
@@ -2458,48 +2486,6 @@ textarea:focus-visible {
   border: 1.5px dashed rgba(245, 200, 76, 0.45);
   border-radius: 10px;
   background: rgba(245, 200, 76, 0.04);
-}
-
-/* ── Formation : navigation horizontale ─────────────────────── */
-.edu-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  margin-top: 1rem;
-  justify-content: flex-end;
-}
-
-.edu-nav-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: rgba(10, 11, 17, 0.55);
-  color: var(--muted);
-  cursor: pointer;
-  transition: border-color 0.2s, background 0.2s, color 0.2s;
-  flex-shrink: 0;
-}
-.edu-nav-btn:hover:not(:disabled) {
-  border-color: rgba(245, 200, 76, 0.5);
-  color: var(--accent);
-  background: rgba(245, 200, 76, 0.07);
-}
-.edu-nav-btn:disabled {
-  opacity: 0.3;
-  cursor: default;
-}
-
-.edu-scroll-hint {
-  font-size: 0.72rem;
-  color: var(--muted);
-  flex: 1;
-  text-align: center;
-  opacity: 0.65;
-  letter-spacing: 0.01em;
 }
 
 /* ── Chatbot — bulle d'invitation ────────────────────────────── */

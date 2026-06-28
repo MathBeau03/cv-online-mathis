@@ -378,30 +378,47 @@ setupTrackCarousel({
 });
 
 // ============================================================
-// Formation — Navigation horizontale
+// Formation — Navigation horizontale carte par carte
 // ============================================================
 function setupEduNav() {
-  const wrap     = document.querySelector('.edu-timeline-wrap');
-  const prev     = document.querySelector('.edu-nav-btn--prev');
-  const next     = document.querySelector('.edu-nav-btn--next');
-  const controls = document.querySelector('.edu-controls');
-  if (!wrap || !prev || !next || !controls) return;
+  const wrap  = document.querySelector('.edu-timeline-wrap');
+  const prev  = document.querySelector('.edu-arrow--prev');
+  const next  = document.querySelector('.edu-arrow--next');
+  if (!wrap || !prev || !next) return;
 
-  const STEP = 210;
+  const steps = Array.from(document.querySelectorAll('.edu-step'));
+  if (!steps.length) return;
 
-  function updateBtns() {
-    const maxScroll = wrap.scrollWidth - wrap.clientWidth;
-    if (maxScroll < 2) { controls.hidden = true; return; }
-    controls.hidden = false;
-    prev.disabled = wrap.scrollLeft <= 0;
-    next.disabled = wrap.scrollLeft >= maxScroll - 1;
+  // Largeur d'un step rendu (inclut le margin visuel issu du card width)
+  function stepWidth() {
+    return steps[0].offsetWidth;
   }
 
-  prev.addEventListener('click', () => wrap.scrollBy({ left: -STEP, behavior: 'smooth' }));
-  next.addEventListener('click', () => wrap.scrollBy({ left:  STEP, behavior: 'smooth' }));
-  wrap.addEventListener('scroll', updateBtns, { passive: true });
-  window.addEventListener('resize', updateBtns, { passive: true });
-  updateBtns();
+  function updateArrows() {
+    const maxScroll = wrap.scrollWidth - wrap.clientWidth;
+    // Pas de débordement : masquer les deux flèches
+    if (maxScroll < 2) {
+      prev.classList.add('edu-arrow--hidden');
+      next.classList.add('edu-arrow--hidden');
+      return;
+    }
+    prev.classList.toggle('edu-arrow--hidden', wrap.scrollLeft <= 1);
+    next.classList.toggle('edu-arrow--hidden', wrap.scrollLeft >= maxScroll - 1);
+  }
+
+  prev.addEventListener('click', () => {
+    wrap.scrollBy({ left: -stepWidth(), behavior: 'smooth' });
+  });
+  next.addEventListener('click', () => {
+    wrap.scrollBy({ left:  stepWidth(), behavior: 'smooth' });
+  });
+
+  wrap.addEventListener('scroll', updateArrows, { passive: true });
+  window.addEventListener('resize', () => setTimeout(updateArrows, 60), { passive: true });
+
+  // État initial : flèche gauche masquée (on est au début)
+  prev.classList.add('edu-arrow--hidden');
+  updateArrows();
 }
 setupEduNav();
 
