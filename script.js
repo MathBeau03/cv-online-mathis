@@ -483,7 +483,6 @@ setupEduNav();
 
   toggleBtn.addEventListener('click', e => {
     e.stopPropagation();
-    markAutoSeen();
     const anyPanelOpen = !!document.querySelector('.chat-hub-panel.open');
     if (anyPanelOpen || menu.classList.contains('open')) closeAll();
     else openMenu();
@@ -504,7 +503,7 @@ setupEduNav();
   document.getElementById('chat-hub-close')?.addEventListener('click', closeMenu);
 
   document.querySelectorAll('.chat-hub-option').forEach(btn => {
-    btn.addEventListener('click', () => { markAutoSeen(); openPanel(btn.dataset.panel); });
+    btn.addEventListener('click', () => openPanel(btn.dataset.panel));
   });
 
   document.querySelectorAll('.panel-back').forEach(btn => {
@@ -627,15 +626,12 @@ setupEduNav();
   setupChatPanel('formation',   'formation');
   setupChatPanel('experiences', 'experiences');
 
-  // Auto-ouverture après 10s — une seule fois par chargement de page, desktop uniquement
+  // Auto-ouverture après 10s — une fois par chargement, desktop uniquement
   if (window.innerWidth >= 640) {
     setTimeout(() => {
       if (_autoOpenDone) return;
-      if (document.querySelector('.chat-hub-panel.open') || menu.classList.contains('open')) {
-        markAutoSeen();
-        return;
-      }
-      markAutoSeen();
+      _autoOpenDone = true;
+      if (document.querySelector('.chat-hub-panel.open') || menu.classList.contains('open')) return;
       openPanel('general');
       setTimeout(() => {
         const messagesEl = document.getElementById('general-messages');
@@ -643,7 +639,7 @@ setupEduNav();
           const div = document.createElement('div');
           div.className = 'chatbot-msg assistant';
           const p = document.createElement('p');
-          p.textContent = '\u{1F44B} Vous n\'avez pas beaucoup de temps ? Posez-moi directement vos questions ici sur mon profil, mes expériences ou mes projets.';
+          p.textContent = '👋 Vous n\'avez pas beaucoup de temps ? Posez-moi directement vos questions ici sur mon profil, mes expériences ou mes projets.';
           div.appendChild(p);
           messagesEl.appendChild(div);
         }
