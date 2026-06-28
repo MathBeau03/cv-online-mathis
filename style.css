@@ -1461,10 +1461,10 @@ p {
   transition: opacity 1.2s ease 0.3s;
 }
 
-.mh-score-num--empty {
-  font-size: 2.2rem;
-  opacity: 0.55;
-  letter-spacing: 0.02em;
+.mh-score-num--blurred {
+  filter: blur(6px);
+  user-select: none;
+  pointer-events: none;
 }
 
 .mh-score-label {
