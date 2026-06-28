@@ -33,18 +33,36 @@ if (navToggle && navLinks) {
 // ============================================================
 const reveals = document.querySelectorAll('.reveal');
 
+function activateReveal(el) {
+  el.classList.add('visible');
+  observer.unobserve(el);
+}
+
 const observer = new IntersectionObserver(
-  entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  },
-  { threshold: 0.15 }
+  entries => entries.forEach(entry => {
+    if (entry.isIntersecting) activateReveal(entry.target);
+  }),
+  { threshold: 0.05, rootMargin: '0px 0px -20px 0px' }
 );
 
 reveals.forEach(el => observer.observe(el));
+
+// Affiche immédiatement les éléments déjà dans le viewport (ancres, scroll rapide)
+function checkVisibleReveals() {
+  reveals.forEach(el => {
+    if (!el.classList.contains('visible')) {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) activateReveal(el);
+    }
+  });
+}
+checkVisibleReveals();
+
+// Re-vérifie après navigation par ancre
+window.addEventListener('hashchange', () => setTimeout(checkVisibleReveals, 60));
+
+// Filet de sécurité : force tout ce qui reste invisible après 900 ms
+setTimeout(checkVisibleReveals, 900);
 
 // ============================================================
 // Bouton "Remonter en haut"
@@ -360,6 +378,34 @@ setupTrackCarousel({
 });
 
 // ============================================================
+// Formation — Navigation horizontale
+// ============================================================
+function setupEduNav() {
+  const wrap     = document.querySelector('.edu-timeline-wrap');
+  const prev     = document.querySelector('.edu-nav-btn--prev');
+  const next     = document.querySelector('.edu-nav-btn--next');
+  const controls = document.querySelector('.edu-controls');
+  if (!wrap || !prev || !next || !controls) return;
+
+  const STEP = 210;
+
+  function updateBtns() {
+    const maxScroll = wrap.scrollWidth - wrap.clientWidth;
+    if (maxScroll < 2) { controls.hidden = true; return; }
+    controls.hidden = false;
+    prev.disabled = wrap.scrollLeft <= 0;
+    next.disabled = wrap.scrollLeft >= maxScroll - 1;
+  }
+
+  prev.addEventListener('click', () => wrap.scrollBy({ left: -STEP, behavior: 'smooth' }));
+  next.addEventListener('click', () => wrap.scrollBy({ left:  STEP, behavior: 'smooth' }));
+  wrap.addEventListener('scroll', updateBtns, { passive: true });
+  window.addEventListener('resize', updateBtns, { passive: true });
+  updateBtns();
+}
+setupEduNav();
+
+// ============================================================
 // Chat Hub — Menu + Panels
 // ============================================================
 (function setupChatHub() {
@@ -367,7 +413,13 @@ setupTrackCarousel({
   const menu      = document.getElementById('chat-hub-menu');
   if (!toggleBtn || !menu) return;
 
+  function hideChatHint() {
+    const bubble = document.getElementById('chat-hint-bubble');
+    if (bubble) bubble.hidden = true;
+  }
+
   function openMenu() {
+    hideChatHint();
     closeAllPanels();
     menu.classList.add('open');
     menu.setAttribute('aria-hidden', 'false');
@@ -393,6 +445,7 @@ setupTrackCarousel({
   }
 
   function openPanel(id) {
+    hideChatHint();
     closeMenu();
     const panel = document.getElementById('panel-' + id);
     if (!panel) return;

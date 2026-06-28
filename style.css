@@ -1435,7 +1435,13 @@ p {
 }
 
 .reveal.visible .mh-arc {
-  stroke-dashoffset: 63.59; /* 289.03 * (1 - 0.78) */
+  stroke-dashoffset: 115.6; /* ~60 % — score exemple, non fictif */
+  animation: mh-breathe 2.8s ease-in-out infinite 1.8s;
+}
+
+@keyframes mh-breathe {
+  0%, 100% { opacity: 0.65; }
+  50%       { opacity: 1; }
 }
 
 .mh-score-text {
@@ -1453,6 +1459,12 @@ p {
   font-weight: 800;
   color: var(--accent);
   transition: opacity 1.2s ease 0.3s;
+}
+
+.mh-score-num--empty {
+  font-size: 2.2rem;
+  opacity: 0.55;
+  letter-spacing: 0.02em;
 }
 
 .mh-score-label {
@@ -2447,6 +2459,78 @@ textarea:focus-visible {
   border-radius: 10px;
   background: rgba(245, 200, 76, 0.04);
 }
+
+/* ── Formation : navigation horizontale ─────────────────────── */
+.edu-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 1rem;
+  justify-content: flex-end;
+}
+
+.edu-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: rgba(10, 11, 17, 0.55);
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+.edu-nav-btn:hover:not(:disabled) {
+  border-color: rgba(245, 200, 76, 0.5);
+  color: var(--accent);
+  background: rgba(245, 200, 76, 0.07);
+}
+.edu-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.edu-scroll-hint {
+  font-size: 0.72rem;
+  color: var(--muted);
+  flex: 1;
+  text-align: center;
+  opacity: 0.65;
+  letter-spacing: 0.01em;
+}
+
+/* ── Chatbot — bulle d'invitation ────────────────────────────── */
+.chat-hint-bubble {
+  position: fixed;
+  right: calc(1.5rem + 52px + 14px);
+  bottom: calc(1.5rem + 10px);
+  background: var(--card-bg);
+  border: 1px solid rgba(245, 200, 76, 0.28);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.48rem 0.9rem;
+  border-radius: 20px;
+  white-space: nowrap;
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transform: translateX(8px);
+  pointer-events: none;
+  z-index: 899;
+  animation:
+    chat-hint-in  0.35s ease forwards 5s,
+    chat-hint-out 0.35s ease forwards 11s;
+}
+
+@keyframes chat-hint-in  { to { opacity: 1; transform: translateX(0); } }
+@keyframes chat-hint-out { to { opacity: 0; transform: translateX(8px); } }
+
+.chat-hint-bubble[hidden] { display: none !important; }
+
+@media (max-width: 420px) { .chat-hint-bubble { display: none; } }
 
 /* ── Mobile 480px — ajustements fin ─────────────────────────── */
 @media (max-width: 480px) {
