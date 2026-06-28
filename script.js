@@ -442,9 +442,9 @@ setupEduNav();
   const menu      = document.getElementById('chat-hub-menu');
   if (!toggleBtn || !menu) return;
 
-  const CHAT_AUTO_KEY = 'chat_auto_opened';
+  let _autoOpenDone = false;
 
-  function markAutoSeen() { sessionStorage.setItem(CHAT_AUTO_KEY, '1'); }
+  function markAutoSeen() { _autoOpenDone = true; }
 
   function openMenu() {
     closeAllPanels();
@@ -627,10 +627,10 @@ setupEduNav();
   setupChatPanel('formation',   'formation');
   setupChatPanel('experiences', 'experiences');
 
-  // Auto-ouverture après 10s — une seule fois par session, desktop uniquement
-  if (!sessionStorage.getItem(CHAT_AUTO_KEY) && window.innerWidth >= 640) {
-    const autoTimer = setTimeout(() => {
-      if (sessionStorage.getItem(CHAT_AUTO_KEY)) return;
+  // Auto-ouverture après 10s — une seule fois par chargement de page, desktop uniquement
+  if (window.innerWidth >= 640) {
+    setTimeout(() => {
+      if (_autoOpenDone) return;
       if (document.querySelector('.chat-hub-panel.open') || menu.classList.contains('open')) {
         markAutoSeen();
         return;
@@ -643,12 +643,11 @@ setupEduNav();
           const div = document.createElement('div');
           div.className = 'chatbot-msg assistant';
           const p = document.createElement('p');
-          p.textContent = '👋 Vous n\'avez pas beaucoup de temps ? Posez-moi directement vos questions ici sur mon profil, mes expériences ou mes projets.';
+          p.textContent = '\u{1F44B} Vous n\'avez pas beaucoup de temps ? Posez-moi directement vos questions ici sur mon profil, mes expériences ou mes projets.';
           div.appendChild(p);
           messagesEl.appendChild(div);
         }
       }, 150);
     }, 10000);
-
   }
 })();

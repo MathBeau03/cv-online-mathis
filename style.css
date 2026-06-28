@@ -20,6 +20,8 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: #050608;
+  overscroll-behavior: none;
 }
 
 body {
