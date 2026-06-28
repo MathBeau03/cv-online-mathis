@@ -514,7 +514,7 @@
 
     /* Overlay de chargement */
     .loading-overlay {
-      display: none;
+      display: flex;
       position: fixed;
       inset: 0;
       background: rgba(5, 6, 8, 0.9);
@@ -525,12 +525,14 @@
       gap: 1.4rem;
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
     }
     .loading-overlay.visible {
-      display: flex;
-      animation: fadeIn 0.25s ease;
+      opacity: 1;
+      pointer-events: auto;
     }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     .loading-title {
       font-size: 1.15rem;
       font-weight: 700;

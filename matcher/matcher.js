@@ -108,31 +108,62 @@ exportPdfBtn.addEventListener('click', () => {
 });
 
 // ── Progress bar ─────────────────────────────────────────────
+let _progressActive = false;
+
 function startProgress() {
-  let pct = 0;
+  clearTimeout(_progressTimer);
+  _progressActive = true;
+
   const bar   = document.getElementById('progressBar');
   const pctEl = document.getElementById('progressPct');
-  bar.style.width  = '0%';
-  pctEl.textContent = '0 %';
+  let pct = 0;
 
-  _progressTimer = setInterval(() => {
-    if (pct < 92) {
-      const remaining = 92 - pct;
-      const step = Math.max(0.4, remaining * 0.055 + Math.random() * 1.8);
-      pct = Math.min(92, pct + step);
-      const rounded = Math.round(pct);
-      bar.style.width  = rounded + '%';
-      pctEl.textContent = rounded + ' %';
-    }
-  }, 200);
+  // 1) Désactiver la transition CSS et forcer 0 %
+  bar.style.transition = 'none';
+  bar.style.width      = '0%';
+  pctEl.textContent    = '0 %';
+
+  // 2) Double rAF : le navigateur commite d'abord 0 %,
+  //    ensuite on active la transition et on démarre les ticks
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      if (!_progressActive) return;
+      bar.style.transition = 'width 0.28s ease-out';
+
+      function tick() {
+        if (!_progressActive) return;
+
+        // Progression par phases : rapide au départ, très lente vers 92 %
+        let step;
+        if      (pct < 22)  step = 2.4 + Math.random() * 3.0;  // démarrage rapide
+        else if (pct < 50)  step = 1.1 + Math.random() * 1.6;  // milieu
+        else if (pct < 75)  step = 0.45 + Math.random() * 0.9; // ralentissement
+        else                step = 0.15 + Math.random() * 0.35; // approche finale
+
+        pct = Math.min(92, pct + step);
+        const rounded = Math.round(pct);
+        bar.style.width   = rounded + '%';
+        pctEl.textContent = rounded + ' %';
+
+        if (pct < 92) {
+          _progressTimer = setTimeout(tick, 150 + Math.random() * 130);
+        }
+      }
+
+      tick();
+    });
+  });
 }
 
 function completeProgress() {
-  clearInterval(_progressTimer);
+  _progressActive = false;
+  clearTimeout(_progressTimer);
+
   const bar   = document.getElementById('progressBar');
   const pctEl = document.getElementById('progressPct');
-  bar.style.width  = '100%';
-  pctEl.textContent = '100 %';
+  bar.style.transition = 'width 0.45s ease-out';
+  bar.style.width      = '100%';
+  pctEl.textContent    = '100 %';
 }
 
 // ── Loading state ────────────────────────────────────────────
