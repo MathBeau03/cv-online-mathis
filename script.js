@@ -381,44 +381,56 @@ setupTrackCarousel({
 // Formation — Navigation horizontale carte par carte
 // ============================================================
 function setupEduNav() {
-  const wrap  = document.querySelector('.edu-timeline-wrap');
-  const prev  = document.querySelector('.edu-arrow--prev');
-  const next  = document.querySelector('.edu-arrow--next');
-  if (!wrap || !prev || !next) return;
+  const wrap = document.querySelector('.edu-timeline-wrap');
+  const prev = document.querySelector('.edu-btn--prev');
+  const next = document.querySelector('.edu-btn--next');
+  const pips = Array.from(document.querySelectorAll('.edu-pip'));
+  if (!wrap || !prev || !next || !pips.length) return;
 
   const steps = Array.from(document.querySelectorAll('.edu-step'));
   if (!steps.length) return;
 
-  // Largeur d'un step rendu (inclut le margin visuel issu du card width)
-  function stepWidth() {
-    return steps[0].offsetWidth;
+  let current = 0;
+
+  function stepWidth() { return steps[0].offsetWidth; }
+
+  function goTo(index) {
+    if (index < 0 || index >= steps.length) return;
+    current = index;
+    wrap.scrollTo({ left: index * stepWidth(), behavior: 'smooth' });
+    updateUI();
   }
 
-  function updateArrows() {
+  function updateUI() {
     const maxScroll = wrap.scrollWidth - wrap.clientWidth;
-    // Pas de débordement : masquer les deux flèches
     if (maxScroll < 2) {
-      prev.classList.add('edu-arrow--hidden');
-      next.classList.add('edu-arrow--hidden');
-      return;
+      prev.disabled = true;
+      next.disabled = true;
+    } else {
+      prev.disabled = current <= 0;
+      next.disabled = current >= steps.length - 1;
     }
-    prev.classList.toggle('edu-arrow--hidden', wrap.scrollLeft <= 1);
-    next.classList.toggle('edu-arrow--hidden', wrap.scrollLeft >= maxScroll - 1);
+    pips.forEach((pip, i) => pip.classList.toggle('active', i === current));
   }
 
-  prev.addEventListener('click', () => {
-    wrap.scrollBy({ left: -stepWidth(), behavior: 'smooth' });
-  });
-  next.addEventListener('click', () => {
-    wrap.scrollBy({ left:  stepWidth(), behavior: 'smooth' });
-  });
+  let scrollTimer = null;
+  wrap.addEventListener('scroll', () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      const sw = stepWidth();
+      if (sw > 0) {
+        current = Math.max(0, Math.min(Math.round(wrap.scrollLeft / sw), steps.length - 1));
+        updateUI();
+      }
+    }, 80);
+  }, { passive: true });
 
-  wrap.addEventListener('scroll', updateArrows, { passive: true });
-  window.addEventListener('resize', () => setTimeout(updateArrows, 60), { passive: true });
+  prev.addEventListener('click', () => goTo(current - 1));
+  next.addEventListener('click', () => goTo(current + 1));
+  pips.forEach((pip, i) => pip.addEventListener('click', () => goTo(i)));
+  window.addEventListener('resize', () => setTimeout(updateUI, 60), { passive: true });
 
-  // État initial : flèche gauche masquée (on est au début)
-  prev.classList.add('edu-arrow--hidden');
-  updateArrows();
+  updateUI();
 }
 setupEduNav();
 
