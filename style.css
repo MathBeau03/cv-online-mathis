@@ -2502,34 +2502,6 @@ textarea:focus-visible {
 }
 
 /* ── Chatbot — bulle d'invitation ────────────────────────────── */
-.chat-hint-bubble {
-  position: fixed;
-  right: calc(1.5rem + 52px + 14px);
-  bottom: calc(1.5rem + 10px);
-  background: var(--card-bg);
-  border: 1px solid rgba(245, 200, 76, 0.28);
-  color: var(--text);
-  font-size: 0.82rem;
-  font-weight: 500;
-  padding: 0.48rem 0.9rem;
-  border-radius: 20px;
-  white-space: nowrap;
-  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.45);
-  opacity: 0;
-  transform: translateX(8px);
-  pointer-events: none;
-  z-index: 899;
-  animation:
-    chat-hint-in  0.35s ease forwards 5s,
-    chat-hint-out 0.35s ease forwards 11s;
-}
-
-@keyframes chat-hint-in  { to { opacity: 1; transform: translateX(0); } }
-@keyframes chat-hint-out { to { opacity: 0; transform: translateX(8px); } }
-
-.chat-hint-bubble[hidden] { display: none !important; }
-
-@media (max-width: 420px) { .chat-hint-bubble { display: none; } }
 
 /* ── Mobile 480px — ajustements fin ─────────────────────────── */
 @media (max-width: 480px) {

@@ -442,13 +442,11 @@ setupEduNav();
   const menu      = document.getElementById('chat-hub-menu');
   if (!toggleBtn || !menu) return;
 
-  function hideChatHint() {
-    const bubble = document.getElementById('chat-hint-bubble');
-    if (bubble) bubble.hidden = true;
-  }
+  const CHAT_AUTO_KEY = 'chat_auto_opened';
+
+  function markAutoSeen() { sessionStorage.setItem(CHAT_AUTO_KEY, '1'); }
 
   function openMenu() {
-    hideChatHint();
     closeAllPanels();
     menu.classList.add('open');
     menu.setAttribute('aria-hidden', 'false');
@@ -474,7 +472,6 @@ setupEduNav();
   }
 
   function openPanel(id) {
-    hideChatHint();
     closeMenu();
     const panel = document.getElementById('panel-' + id);
     if (!panel) return;
@@ -486,6 +483,7 @@ setupEduNav();
 
   toggleBtn.addEventListener('click', e => {
     e.stopPropagation();
+    markAutoSeen();
     const anyPanelOpen = !!document.querySelector('.chat-hub-panel.open');
     if (anyPanelOpen || menu.classList.contains('open')) closeAll();
     else openMenu();
@@ -506,7 +504,7 @@ setupEduNav();
   document.getElementById('chat-hub-close')?.addEventListener('click', closeMenu);
 
   document.querySelectorAll('.chat-hub-option').forEach(btn => {
-    btn.addEventListener('click', () => openPanel(btn.dataset.panel));
+    btn.addEventListener('click', () => { markAutoSeen(); openPanel(btn.dataset.panel); });
   });
 
   document.querySelectorAll('.panel-back').forEach(btn => {
@@ -628,4 +626,29 @@ setupEduNav();
   setupChatPanel('general',     'general');
   setupChatPanel('formation',   'formation');
   setupChatPanel('experiences', 'experiences');
+
+  // Auto-ouverture après 10s — une seule fois par session, desktop uniquement
+  if (!sessionStorage.getItem(CHAT_AUTO_KEY) && window.innerWidth >= 640) {
+    const autoTimer = setTimeout(() => {
+      if (sessionStorage.getItem(CHAT_AUTO_KEY)) return;
+      if (document.querySelector('.chat-hub-panel.open') || menu.classList.contains('open')) {
+        markAutoSeen();
+        return;
+      }
+      markAutoSeen();
+      openPanel('general');
+      setTimeout(() => {
+        const messagesEl = document.getElementById('general-messages');
+        if (messagesEl && !messagesEl.children.length) {
+          const div = document.createElement('div');
+          div.className = 'chatbot-msg assistant';
+          const p = document.createElement('p');
+          p.textContent = '👋 Vous n\'avez pas beaucoup de temps ? Posez-moi directement vos questions ici sur mon profil, mes expériences ou mes projets.';
+          div.appendChild(p);
+          messagesEl.appendChild(div);
+        }
+      }, 150);
+    }, 10000);
+
+  }
 })();
