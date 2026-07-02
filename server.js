@@ -54,7 +54,7 @@ app.use((req, res, next) => {
     "script-src 'self' https://cdn.jsdelivr.net",
     "style-src 'self' 'unsafe-inline'",         // unsafe-inline pour le CSS inline (à réduire si possible)
     "img-src 'self' data: https:",
-    "connect-src 'self' https://api.emailjs.com https://api.anthropic.com",
+    "connect-src 'self' https://api.emailjs.com",
     "font-src 'self'",
     "frame-src 'none'",
     "object-src 'none'",
@@ -113,6 +113,23 @@ setInterval(() => {
     if (!k.includes(`|${t}`)) _rateCounts.delete(k);
   }
 }, 3_600_000);
+
+// ── Budget global journalier (coupe-circuit toutes IPs) ─────
+const GLOBAL_DAILY_CHAT_LIMIT  = 200;
+const GLOBAL_DAILY_MATCH_LIMIT = 50;
+const _globalCounts = { chat: 0, match: 0, day: _rateToday() };
+
+function checkGlobalBudget(endpoint) {
+  const today = _rateToday();
+  if (_globalCounts.day !== today) {
+    _globalCounts.chat  = 0;
+    _globalCounts.match = 0;
+    _globalCounts.day   = today;
+  }
+  const limit = endpoint === 'chat' ? GLOBAL_DAILY_CHAT_LIMIT : GLOBAL_DAILY_MATCH_LIMIT;
+  _globalCounts[endpoint]++;
+  return { allowed: _globalCounts[endpoint] <= limit, used: _globalCounts[endpoint], max: limit };
+}
 
 // ── Chargement des PDFs au démarrage ─────────────────────────
 let docFormation   = '';
@@ -277,6 +294,13 @@ app.post('/api/chat', async (req, res) => {
       limit: true,
     });
   }
+  const globalChat = checkGlobalBudget('chat');
+  if (!globalChat.allowed) {
+    return res.status(429).json({
+      error: 'Service temporairement indisponible (budget journalier atteint). Revenez demain.',
+      limit: true,
+    });
+  }
 
   const { messages, topic } = req.body;
   if (!messages || !Array.isArray(messages)) {
@@ -371,6 +395,13 @@ app.post('/api/match', upload.single('file'), handleMulterError, async (req, res
       limit: true,
     });
   }
+  const globalMatch = checkGlobalBudget('match');
+  if (!globalMatch.allowed) {
+    return res.status(429).json({
+      error: 'Service temporairement indisponible (budget journalier atteint). Revenez demain.',
+      limit: true,
+    });
+  }
   if (req.body?.text && req.body.text.length > 20_000) {
     return res.status(400).json({ error: 'Texte trop long (max 20 000 caractères).' });
   }
@@ -445,7 +476,7 @@ Sois rigoureux. Ne surestime pas le score.`.trim();
       },
       body: JSON.stringify({
         model:      'claude-sonnet-4-6',
-        max_tokens: 2000,
+        max_tokens: 1200,
         messages:   [{ role: 'user', content: claudeContent }],
       }),
     });
