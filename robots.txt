@@ -4,7 +4,7 @@
 User-agent: *
 Allow: /
 Allow: /matcher/
-Allow: /generator/
+Disallow: /generator/
 
 # Bloquer les fichiers sensibles
 Disallow: /server.js

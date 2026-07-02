@@ -19,12 +19,5 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- Générateur CV + Lettre de motivation -->
-  <url>
-    <loc>https://mathisbeauchamp.fr/generator/</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
 
 </urlset>
