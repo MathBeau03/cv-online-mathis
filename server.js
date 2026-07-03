@@ -124,9 +124,9 @@ setInterval(() => {
   }
 }, 3_600_000);
 
-// ── Budget global journalier (coupe-circuit toutes IPs) ─────
-const GLOBAL_DAILY_CHAT_LIMIT  = 200;
-const GLOBAL_DAILY_MATCH_LIMIT = 50;
+// ── Budget global journalier (coupe-circuit toutes IPs) ───────
+const GLOBAL_DAILY_CHAT_LIMIT  = 200; // max appels /api/chat par jour (toutes IPs)
+const GLOBAL_DAILY_MATCH_LIMIT = 50;  // max appels /api/match par jour (toutes IPs)
 const _globalCounts = { chat: 0, match: 0, day: _rateToday() };
 
 function checkGlobalBudget(endpoint) {
