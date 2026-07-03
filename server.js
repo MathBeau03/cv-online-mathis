@@ -75,6 +75,16 @@ app.use((req, res, next) => {
   next();
 });
 
+// ── Health check (uptime monitoring + Railway keep-alive) ─────
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    docsLoaded: !!docFormation && !!docExperiences,
+    uptime: Math.round(process.uptime()),
+    env: process.env.NODE_ENV || 'development',
+  });
+});
+
 // ── Routes HTML (AVANT express.static) ───────────────────────
 app.get('/',          (req, res) => { res.setHeader('Cache-Control', 'no-cache'); res.sendFile(path.join(__dirname, 'index.html')); });
 app.get('/generator', (req, res) => res.redirect(301, '/'));
@@ -327,6 +337,14 @@ app.post('/api/chat', async (req, res) => {
     return res.status(400).json({ error: 'topic invalide' });
   }
 
+  // PDFs pas encore chargés (cold start) → réponse gracieuse
+  if ((topic === 'formation' && !docFormation) || (topic === 'experiences' && !docExperiences)) {
+    return res.status(503).json({
+      error: 'Le service démarre, veuillez réessayer dans quelques secondes.',
+      limit: false,
+    });
+  }
+
   const systemPrompt = buildSystemPrompt(topic);
   if (!systemPrompt) {
     return res.status(400).json({ error: 'Impossible de construire le prompt.' });
@@ -513,9 +531,8 @@ app.use((err, req, res, next) => {
 
 // ── Démarrage ─────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
-loadDocuments().then(() => {
-  app.listen(PORT, () => {
-    console.log(`✓ CV Online démarré → http://localhost:${PORT}`);
-    console.log(`  Environnement : ${process.env.NODE_ENV || 'development'}`);
-  });
+app.listen(PORT, () => {
+  console.log(`✓ CV Online démarré → http://localhost:${PORT}`);
+  console.log(`  Environnement : ${process.env.NODE_ENV || 'development'}`);
+  loadDocuments(); // Chargement en arrière-plan — ne bloque plus le démarrage
 });
