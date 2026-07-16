@@ -513,7 +513,7 @@ Sois rigoureux. Ne surestime pas le score.`.trim();
       result = JSON.parse(raw);
     } catch (e) {
       console.error('JSON parse error:', e, '\nRaw:', raw);
-      return res.status(502).json({ error: 'Réponse Claude invalide (JSON attendu).', raw });
+      return res.status(502).json({ error: 'Réponse Claude invalide (JSON attendu).' });
     }
 
     res.json(result);
