@@ -50,10 +50,10 @@ app.use((req, res, next) => {
   // Content Security Policy
   res.setHeader('Content-Security-Policy', [
     "default-src 'self'",
-    "script-src 'self' https://cdn.jsdelivr.net",
+    "script-src 'self' https://cdn.jsdelivr.net https://www.googletagmanager.com",
     "style-src 'self' 'unsafe-inline'",         // unsafe-inline pour le CSS inline (à réduire si possible)
     "img-src 'self' data: https:",
-    "connect-src 'self' https://api.emailjs.com",
+    "connect-src 'self' https://api.emailjs.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com",
     "font-src 'self'",
     "frame-src 'none'",
     "object-src 'none'",
