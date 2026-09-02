@@ -13,7 +13,6 @@ app.set('trust proxy', 1); // IP correcte derrière Render/Heroku/nginx
 const ALLOWED_ORIGINS = new Set([
   'https://mathisbeauchamp.fr',
   'https://www.mathisbeauchamp.fr',
-  'https://portfolio-mathis-beauchamp-production.up.railway.app',
   // Décommentez pour le dev local :
   // 'http://localhost:3000',
 ]);
