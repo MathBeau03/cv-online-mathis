@@ -25,3 +25,8 @@ build/
 
 # Dossier Claude (Cowork sessions)
 .claude/
+
+# Documents d'audit internes (ne doivent jamais être servis/publiés)
+AUDIT_CLAUDE_CODE.md
+Audit_*.docx
+Audit_*.md

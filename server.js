@@ -54,7 +54,7 @@ app.use((req, res, next) => {
     "script-src 'self' https://cdn.jsdelivr.net",
     "style-src 'self' 'unsafe-inline'",         // unsafe-inline pour le CSS inline (à réduire si possible)
     "img-src 'self' data: https:",
-    "connect-src 'self' https://api.emailjs.com https://api.anthropic.com",
+    "connect-src 'self' https://api.emailjs.com",
     "font-src 'self'",
     "frame-src 'none'",
     "object-src 'none'",
@@ -66,13 +66,28 @@ app.use((req, res, next) => {
 
 app.use(express.json({ limit: '2mb' }));
 
-// ── Blocage des fichiers serveur (jamais servis en statique) ──
-const BLOCKED_STATIC = new Set([
+// ── Blocage des fichiers/dossiers sensibles (jamais servis en statique) ──
+const BLOCKED_STATIC_EXACT = new Set([
   '/server.js', '/package.json', '/package-lock.json', '/.env',
 ]);
+const BLOCKED_STATIC_PREFIXES = ['/node_modules/', '/.git/', '/.claude/'];
+const BLOCKED_STATIC_EXTENSIONS = new Set(['.md', '.docx', '.doc', '.env']);
 app.use((req, res, next) => {
-  if (BLOCKED_STATIC.has(req.path)) return res.status(403).end();
+  const p = req.path;
+  if (BLOCKED_STATIC_EXACT.has(p)) return res.status(403).end();
+  if (BLOCKED_STATIC_PREFIXES.some(prefix => p.startsWith(prefix))) return res.status(403).end();
+  if (BLOCKED_STATIC_EXTENSIONS.has(path.extname(p).toLowerCase())) return res.status(403).end();
   next();
+});
+
+// ── Health check (uptime monitoring + Railway keep-alive) ─────
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    docsLoaded: !!docFormation && !!docExperiences,
+    uptime: Math.round(process.uptime()),
+    env: process.env.NODE_ENV || 'development',
+  });
 });
 
 // ── Routes HTML (AVANT express.static) ───────────────────────
@@ -113,6 +128,23 @@ setInterval(() => {
     if (!k.includes(`|${t}`)) _rateCounts.delete(k);
   }
 }, 3_600_000);
+
+// ── Budget global journalier (coupe-circuit toutes IPs) ───────
+const GLOBAL_DAILY_CHAT_LIMIT  = 200; // max appels /api/chat par jour (toutes IPs)
+const GLOBAL_DAILY_MATCH_LIMIT = 50;  // max appels /api/match par jour (toutes IPs)
+const _globalCounts = { chat: 0, match: 0, day: _rateToday() };
+
+function checkGlobalBudget(endpoint) {
+  const today = _rateToday();
+  if (_globalCounts.day !== today) {
+    _globalCounts.chat  = 0;
+    _globalCounts.match = 0;
+    _globalCounts.day   = today;
+  }
+  const limit = endpoint === 'chat' ? GLOBAL_DAILY_CHAT_LIMIT : GLOBAL_DAILY_MATCH_LIMIT;
+  _globalCounts[endpoint]++;
+  return { allowed: _globalCounts[endpoint] <= limit, used: _globalCounts[endpoint], max: limit };
+}
 
 // ── Chargement des PDFs au démarrage ─────────────────────────
 let docFormation   = '';
@@ -277,6 +309,13 @@ app.post('/api/chat', async (req, res) => {
       limit: true,
     });
   }
+  const globalChat = checkGlobalBudget('chat');
+  if (!globalChat.allowed) {
+    return res.status(429).json({
+      error: 'Service temporairement indisponible (budget journalier atteint). Revenez demain.',
+      limit: true,
+    });
+  }
 
   const { messages, topic } = req.body;
   if (!messages || !Array.isArray(messages)) {
@@ -301,6 +340,14 @@ app.post('/api/chat', async (req, res) => {
   const validTopics = ['general', 'formation', 'experiences'];
   if (!topic || !validTopics.includes(topic)) {
     return res.status(400).json({ error: 'topic invalide' });
+  }
+
+  // PDFs pas encore chargés (cold start) → réponse gracieuse
+  if ((topic === 'formation' && !docFormation) || (topic === 'experiences' && !docExperiences)) {
+    return res.status(503).json({
+      error: 'Le service démarre, veuillez réessayer dans quelques secondes.',
+      limit: false,
+    });
   }
 
   const systemPrompt = buildSystemPrompt(topic);
@@ -368,6 +415,13 @@ app.post('/api/match', upload.single('file'), handleMulterError, async (req, res
   if (!limit.allowed) {
     return res.status(429).json({
       error: `Limite journalière atteinte (5 analyses/jour). Revenez demain 🙂`,
+      limit: true,
+    });
+  }
+  const globalMatch = checkGlobalBudget('match');
+  if (!globalMatch.allowed) {
+    return res.status(429).json({
+      error: 'Service temporairement indisponible (budget journalier atteint). Revenez demain.',
       limit: true,
     });
   }
@@ -445,7 +499,7 @@ Sois rigoureux. Ne surestime pas le score.`.trim();
       },
       body: JSON.stringify({
         model:      'claude-sonnet-4-6',
-        max_tokens: 2000,
+        max_tokens: 1200,
         messages:   [{ role: 'user', content: claudeContent }],
       }),
     });
@@ -464,7 +518,7 @@ Sois rigoureux. Ne surestime pas le score.`.trim();
       result = JSON.parse(raw);
     } catch (e) {
       console.error('JSON parse error:', e, '\nRaw:', raw);
-      return res.status(502).json({ error: 'Réponse Claude invalide (JSON attendu).', raw });
+      return res.status(502).json({ error: 'Réponse Claude invalide (JSON attendu).' });
     }
 
     res.json(result);
@@ -482,9 +536,8 @@ app.use((err, req, res, next) => {
 
 // ── Démarrage ─────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
-loadDocuments().then(() => {
-  app.listen(PORT, () => {
-    console.log(`✓ CV Online démarré → http://localhost:${PORT}`);
-    console.log(`  Environnement : ${process.env.NODE_ENV || 'development'}`);
-  });
+app.listen(PORT, () => {
+  console.log(`✓ CV Online démarré → http://localhost:${PORT}`);
+  console.log(`  Environnement : ${process.env.NODE_ENV || 'development'}`);
+  loadDocuments(); // Chargement en arrière-plan — ne bloque plus le démarrage
 });
